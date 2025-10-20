@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Ink:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Single+Ink:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+
+
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -20,6 +30,7 @@ body {
   position: fixed;
   top: 0;
   z-index: 1;
+  
 }
 
 .nav-links {
@@ -40,6 +51,12 @@ body {
   text-decoration: none;
   font-size: 15px;
   transition: color 0.3s;
+  font-family: "Bitcount Ink", system-ui;
+  font-family: "Bitcount Single Ink", system-ui;
+  font-family: "Bitcount Grid Single", system-ui;
+  font-family: "Press Start 2P", system-ui;
+  font-family: "Doto", sans-serif;
+  font-family: "Pixelify Sans", sans-serif;
 }
 .nav-links .nav-pages a {
   padding-right: 25px;
@@ -49,7 +66,7 @@ body {
 .nav-links .nav-pages a:hover {
   padding-right: 25px;
   padding-left: 25px;
-  text-shadow: 0 0 10px #ff0099;
+  text-shadow: 0 0 15px #ff0099;
 }
 
 .nav-links .login-register button {
@@ -109,14 +126,7 @@ body {
   width:700px;
   opacity: 0.3;
 }
-.pages .page-two{
-  background-color: #ff0099;
-  background: radial-gradient(
-    circle at top left,
-    #0f081e 10%,
-    #0b0128 60%,
-    #0a021a 100%
-  );
+.page-two{
 }
 
 .pages .page-two .page-texting{
