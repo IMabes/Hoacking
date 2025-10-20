@@ -1,0 +1,148 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  /* background: radial-gradient(
+    circle at top left,
+    #0f081e 10%,
+    #0b0128 60%,
+    #0a021a 100%
+  ); */
+  height: auto;
+}
+
+.navbar {
+  width: 100%;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 100px;
+}
+
+.nav-links .nav-pages {
+  margin-right: 120px;
+}
+.nav-links .login-register {
+  margin-right: 120px;
+}
+
+.nav-links .nav-pages a,
+.nav-links .login-register button {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s;
+}
+.nav-links .nav-pages a {
+  padding-right: 25px;
+  padding-left: 25px;
+  text-shadow: #680032;
+}
+.nav-links .nav-pages a:hover {
+  padding-right: 25px;
+  padding-left: 25px;
+  text-shadow: 0 0 10px #ff0099;
+}
+
+.nav-links .login-register button {
+  margin-left: 10px;
+  border-radius: 30px;
+  font-weight: 300;
+  background: #ff00990b;
+  box-shadow: 0 0 20px #ff00991a;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.nav-links .login-register button:hover {
+  margin-left: 10px;
+  border-radius: 30px;
+  font-weight: 300;
+  background: #ff009925;
+  box-shadow: 0 0 15px #ff00995b;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.nav-links .nav-pages button {
+  color: #680032;
+}
+
+.pages {
+  height: 300vh;
+  background: radial-gradient(
+    circle at top left,
+    #0f081e 10%,
+    #0b0128 60%,
+    #0a021a 100%
+  );
+}
+
+.pages .page-one .page-texting {
+  color: white;
+  /* border: #ff0099;
+  border-style: inset; */
+  height: auto;
+  width: 900px;
+  position: absolute;
+  left: 10%;
+  top: 30%;
+  font-size: 25px;
+}
+.pages .page-one .decoration {
+  /* border: #ff0099;
+  border-style: inset; */
+  position: absolute;
+  left: 60%;
+  top: 20%;
+}
+.decoration img {
+  width:700px;
+  opacity: 0.3;
+}
+.pages .page-two{
+  background-color: #ff0099;
+  background: radial-gradient(
+    circle at top left,
+    #0f081e 10%,
+    #0b0128 60%,
+    #0a021a 100%
+  );
+}
+
+.pages .page-two .page-texting{
+  color: rgb(255, 0, 0);
+  /* border: #ff0099;
+  border-style: inset; */
+  position: absolute;
+  height: auto;
+  width: 900px;
+  font-size: 25px;
+  left: 50%;
+  top: 120%;
+}
+.pages .page-two .decoration{
+  position: absolute;
+  left: 10%;
+  top: 110%;
+}
+.blob{
+  position: absolute;
+  left: 30%;
+  width: 400px;
+  height: 600px;
+  opacity: 0.3;
+  filter: blur(15px);
+}
+.blob:nth-child(2){
+  filter: blur(50px);
+}
