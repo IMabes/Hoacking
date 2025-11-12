@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Sayfası</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="register-body">
+    <script>
+        // Navbar dosyasını yükle
+        fetch("../backend/includes/navbar.html") // navbar kodunu HTML olarak kaydet
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById("navbar").innerHTML = data;
+          })
+          .catch(error => console.error('Navbar yüklenemedi:', error));
+
+          //blop efektini ekler
+          fetch("../backend/includes/blob.html") // navbar kodunu HTML olarak kaydet
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById("blob").innerHTML = data;
+          })
+          .catch(error => console.error('bloblar yüklenemedi:', error));
+      </script>
+      
+      <div id="navbar"></div>
+      <div id="blob"></div>
+    <div class="register-container">
+        <div class="register-form">
+            <h1>Kayıt Ol</h1>
+            <form action="">
+                <input type="text" placeholder="Adınız">
+                <input type="text" placeholder="Soyadınız">
+                <input type="text" placeholder="Kullanıcı adınız">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Şifre">
+                <button>Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

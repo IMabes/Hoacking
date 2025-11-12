@@ -4,61 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hocking</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header class="navbar">
-      <div class="logo">
-        <img src="images/Logo.png" alt="logo" />
-      </div>
-      <nav class="nav-links">
-        <div class="nav-pages">
-          <a href="#">Anasayfa</a>
-          <a href="#">Testler</a>
-          <a href="#">Araştırmalar</a>
-          <a href="#">Forum</a>
-        </div>
-        <div class="login-register">
-          <button>ÜYE OL</button>
-          <button>GİRİŞ YAP</button>
-        </div>
-      </nav>
-    </header>
+    <script>
+      // Navbar dosyasını yükle
+      fetch("../backend/includes/navbar.html") // navbar kodunu HTML olarak kaydet
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("navbar").innerHTML = data;
+        })
+        .catch(error => console.error('Navbar yüklenemedi:', error));
+    </script>
+    <div id="navbar"></div>
     <div class="pages">
       <div class="page-one">
-        <div class="blob">
-            <svg
-              viewBox="0 0 500 500"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="100%"
-              id="blobSvg"
-            >
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color: #0b0128"></stop>
-                  <stop offset="100%" style="stop-color: #56005e"></stop>
-                </linearGradient>
-              </defs>
-              <path fill="url(#gradient)">
-                <animate
-                  attributeName="d"
-                  dur="11000ms"
-                  repeatCount="indefinite"
-                  values="M361.5,321Q332,392,252,388.5Q172,385,86,317.5Q0,250,78.5,169.5Q157,89,243.5,100.5Q330,112,360.5,181Q391,250,361.5,321Z;
-                  
-                  M416.5209,321Q332,392,236.71642,415.501Q141.43283,439.00199,124.20896,344.501Q106.98508,250,149.31393,199.04826Q191.64279,148.09652,271.5199,111.19851Q351.39702,74.3005,426.21941,162.15025Q501.04179,250,416.5209,321Z;
-                  
-                  M383,312Q322,374,225,418Q128,462,107.5,356Q87,250,142,204Q197,158,255.5,148.5Q314,139,379,194.5Q444,250,383,312Z;
-                  
-                  M385.5,346Q361,442,243,454Q125,466,105,358Q85,250,111,152.5Q137,55,237.5,76.5Q338,98,374,174Q410,250,385.5,346Z;
-                  
-                  M412.65211,326.15807Q338.02514,402.31615,264.40839,377.24307Q190.79165,352.17,155.12697,301.085Q119.46229,250,123.53174,144.1455Q127.60119,38.29101,215.56945,97.38624Q303.53771,156.48147,395.40839,203.24073Q487.27908,250,412.65211,326.15807Z;
-                  M361.5,321Q332,392,252,388.5Q172,385,86,317.5Q0,250,78.5,169.5Q157,89,243.5,100.5Q330,112,360.5,181Q391,250,361.5,321Z"
-                ></animate>
-              </path>
-            </svg>
-          </div>
         <div class="page-texting">
           <h1>WELCOME!</h1>
           <p>
