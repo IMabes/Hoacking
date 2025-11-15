@@ -5,29 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/page.css">
 </head>
 <body class="login-body">
-    <script>
-        // Navbar dosyasını yükle
-        fetch("../backend/includes/navbar.html") // navbar kodunu HTML olarak kaydet
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById("navbar").innerHTML = data;
-          })
-          .catch(error => console.error('Navbar yüklenemedi:', error));
-
-          //blop efektini ekler
-          fetch("../backend/includes/blob.html") // navbar kodunu HTML olarak kaydet
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById("blob").innerHTML = data;
-          })
-          .catch(error => console.error('bloblar yüklenemedi:', error));
-      </script>
+   <script src="js/includes.js"></script>
       
       <div id="navbar"></div>
       <div id="blob"></div>
-    <div class="login-container">
+        <div class="login-container">
         <div class="login-form">
             <h1>Giriş Yap</h1>
             <form action="">
@@ -36,7 +21,8 @@
                 <button>Giriş Yap</button>
             </form>
         </div>
-    </div>
+      </div>
+    
 
 </body>
 </html>

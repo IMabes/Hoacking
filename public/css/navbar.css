@@ -1,0 +1,73 @@
+.navbar {
+  width: 100%;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(3px);
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  height: 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 100px;
+}
+
+.nav-links .nav-pages {
+  margin-right: 120px;
+}
+.nav-links .login-register {
+  margin-right: 120px;
+}
+
+.nav-links .nav-pages a,
+.nav-links .login-register button {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.3s;
+  font-family: "Bitcount Ink", system-ui;
+  font-family: "Bitcount Single Ink", system-ui;
+  font-family: "Bitcount Grid Single", system-ui;
+  font-family: "Press Start 2P", system-ui;
+  font-family: "Doto", sans-serif;
+  font-family: "Pixelify Sans", sans-serif;
+}
+.nav-links .nav-pages a {
+  padding-right: 25px;
+  padding-left: 25px;
+  text-shadow: #680032;
+}
+.nav-links .nav-pages a:hover {
+  padding-right: 25px;
+  padding-left: 25px;
+  text-shadow: 0 0 15px #ff0000;
+}
+
+.nav-links .login-register button {
+  margin-left: 10px;
+  border-radius: 30px;
+  font-weight: 300;
+  background: #ff00990b;
+  box-shadow: 0 0 10px #ff00991a;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.nav-links .login-register button:hover {
+  margin-left: 10px;
+  border-radius: 30px;
+  font-weight: 300;
+  background: #ff009925;
+  box-shadow: 0 0 15px #ff00995b;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.nav-links .nav-pages button {
+  color: #680032;
+}

@@ -8,104 +8,20 @@
 
 
 
-body{
+body ,html {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  /* background: radial-gradient(
-    circle at top left,
-    #0f081e 10%,
-    #0b0128 60%,
-    #0a021a 100%
-  ); */
- 
 }
 
 
-.navbar {
-  width: 100%;
-  padding: 15px 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  
-}
+.main{
+  flex: 1;
+  padding-top: 70px;
+  padding-bottom: 50px;
+  height: 2500px;
+} 
 
-.nav-links {
-  display: flex;
-  gap: 100px;
-}
-
-.nav-links .nav-pages {
-  margin-right: 120px;
-}
-.nav-links .login-register {
-  margin-right: 120px;
-}
-
-.nav-links .nav-pages a,
-.nav-links .login-register button {
-  color: rgb(255, 255, 255);
-  text-decoration: none;
-  font-size: 15px;
-  transition: color 0.3s;
-  font-family: "Bitcount Ink", system-ui;
-  font-family: "Bitcount Single Ink", system-ui;
-  font-family: "Bitcount Grid Single", system-ui;
-  font-family: "Press Start 2P", system-ui;
-  font-family: "Doto", sans-serif;
-  font-family: "Pixelify Sans", sans-serif;
-}
-.nav-links .nav-pages a {
-  padding-right: 25px;
-  padding-left: 25px;
-  text-shadow: #680032;
-}
-.nav-links .nav-pages a:hover {
-  padding-right: 25px;
-  padding-left: 25px;
-  text-shadow: 0 0 15px #ff0099;
-}
-
-.nav-links .login-register button {
-  margin-left: 10px;
-  border-radius: 30px;
-  font-weight: 300;
-  background: #ff00990b;
-  box-shadow: 0 0 20px #ff00991a;
-  border: none;
-  cursor: pointer;
-  transition: 0.4s;
-}
-.nav-links .login-register button:hover {
-  margin-left: 10px;
-  border-radius: 30px;
-  font-weight: 300;
-  background: #ff009925;
-  box-shadow: 0 0 15px #ff00995b;
-  border: none;
-  cursor: pointer;
-  transition: 0.4s;
-}
-
-.nav-links .nav-pages button {
-  color: #680032;
-}
-
-.pages {
-  height: 300vh;
-  background: radial-gradient(
-    circle at top left,
-    #0f081e 10%,
-    #0b0128 60%,
-    #0a021a 100%
-  );
-}
-
-.pages .page-one .page-texting {
+.main .page-one .page-texting {
   color: white;
   /* border: #ff0099;
   border-style: inset; */
@@ -116,20 +32,22 @@ body{
   top: 30%;
   font-size: 25px;
 }
-.pages .page-one .decoration {
+
+.main .page-one .decoration {
   /* border: #ff0099;
   border-style: inset; */
   position: absolute;
   left: 60%;
   top: 20%;
 }
+
 .decoration img {
-  width:700px;
+  width: 700px;
   opacity: 0.3;
 }
 
 
-.pages .page-two .page-texting{
+.main .page-two .page-texting {
   color: rgb(255, 0, 0);
   /* border: #ff0099;
   border-style: inset; */
@@ -140,37 +58,35 @@ body{
   left: 50%;
   top: 120%;
 }
-.pages .page-two .decoration{
+
+.main .page-two .decoration {
   position: absolute;
   left: 10%;
   top: 110%;
 }
-.register-body, .login-body{ 
-  height: auto;
-  background: radial-gradient(
-  circle at top left,
-  #0f081e 10%,
-  #0a021a 100%
-);
-}
 
-.register-body .register-container,.login-body .login-container{
+.register-body .register-container,
+.login-body .login-container {
   width: 30%;
-  margin: 0 auto; 
+  margin: 0 auto;
   margin-top: 10%;
 }
 
-.register-body form,.login-body form {
+.register-body form,
+.login-body form {
   display: flex;
   flex-direction: column;
-  gap: 10px;  
+  gap: 10px;
 }
-.register-body .register-form h1,.login-body .login-form h1{
+
+.register-body .register-form h1,
+.login-body .login-form h1 {
   text-align: center;
   color: rgb(255, 255, 255);
 }
 
-.register-body form input,.login-body form input{
+.register-body form input,
+.login-body form input {
   width: 70%;
   padding: 10px;
   border-radius: 5px;
@@ -179,7 +95,9 @@ body{
   background: none;
   margin: 0 auto;
 }
-.register-body form input:focus,.login-body form input:focus{
+
+.register-body form input:focus,
+.login-body form input:focus {
   width: 70%;
   padding: 10px;
   border-radius: 5px;
@@ -189,7 +107,8 @@ body{
   margin: 0 auto;
 }
 
-.register-body form button,.login-body form button{
+.register-body form button,
+.login-body form button {
   border: 1px solid rgba(255, 255, 255, 0.151);
   width: 40%;
   height: 50px;
@@ -203,7 +122,9 @@ body{
   transition: 0.3s;
   margin-top: 30px;
 }
-.register-body form button:hover,.login-body form button:hover{
+
+.register-body form button:hover,
+.login-body form button:hover {
   border: 1px solid rgba(255, 255, 255, 0.5);
   width: 40%;
   height: 50px;
@@ -218,6 +139,30 @@ body{
   margin-top: 30px;
 }
 
+.test-row-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1600px;
+  margin: 0 auto;
+  margin-top: 200px;
+}
 
+.test-column-number {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 100px;
+}
 
+.card-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 6%;
+}
 
+.blog-container{
+  
+  
+}
