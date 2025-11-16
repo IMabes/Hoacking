@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3D Kalkan Modeli</title>
+
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+
+    <style>
+      body {
+        background: #00000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      model-viewer {
+        width: 600px;
+        height: 600px;
+      }
+
+
+      model-viewer::part(controls),
+model-viewer::part(ar-button),
+model-viewer::part(loading-bar),
+model-viewer::part(interaction-prompt) {
+  display: none !important;
+}
+    </style>
+  </head>
+  <body>
+    <div class="chain-model">
+      <model-viewer
+        src="../../public/3D/models/chain.glb"
+        alt="3D Zincir"
+        disable-zoom="false"
+        disable-pan="false"
+        camera-controls="false"
+        auto-rotate="false"
+        touch-action="none"
+        ar="false"
+        shadow-intensity="0"
+        rotation-per-second="0deg"
+        exposure="1.1"
+        environment-image="neutral"
+        environment-image="neutral"
+        id="chain-model"
+      >
+      </model-viewer>
+    </div>
+
+    <div class="abstract-model">
+      <model-viewer
+        src="../../public/3D/models/abstract_core.glb"
+        alt="3D abstract"
+        disable-zoom="false"
+        disable-pan="false"
+        camera-controls="false"
+        auto-rotate="false"
+        touch-action="none"
+        ar="false"
+        shadow-intensity="0"
+        rotation-per-second="0deg"
+        exposure="1.1"
+        environment-image="neutral"
+        id="abstract-model"
+      >
+      </model-viewer>
+    </div>
+  </body>
+</html>
