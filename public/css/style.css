@@ -8,18 +8,19 @@
 
 
 
-body ,html {
+body,
+html {
   margin: 0;
   font-family: "Poppins", sans-serif;
 }
 
 
-.main{
+.main {
   flex: 1;
   padding-top: 70px;
   padding-bottom: 50px;
   height: 2500px;
-} 
+}
 
 .main .page-one .page-texting {
   color: white;
@@ -48,7 +49,7 @@ body ,html {
 
 
 .main .page-two .page-texting {
-  color: rgb(255, 0, 0);
+  color: rgb(255, 0, 93);
   /* border: #ff0099;
   border-style: inset; */
   position: absolute;
@@ -154,7 +155,7 @@ body ,html {
   gap: 100px;
 }
 
-.card-container{
+.card-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -168,4 +169,9 @@ body ,html {
   margin: 0 auto;
   margin-left: 4%;
   
+}
+
+.main .page-two .decoration #abstract-model {
+  width: 700px;
+  height: 700px;
 }
