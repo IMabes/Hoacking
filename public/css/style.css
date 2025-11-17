@@ -163,6 +163,9 @@ body ,html {
 }
 
 .blog-container{
-  
+  width: 100%;
+  align-items: center;
+  margin: 0 auto;
+  margin-left: 4%;
   
 }
