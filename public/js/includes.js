@@ -7,6 +7,14 @@ function loadIncludes() {
     })
     .catch((err) => console.error("Navbar yüklenemedi:", err));
 
+    // footer yükle
+  fetch("../backend/includes/footer.html")
+  .then((response) => response.text())
+  .then((data) => {
+    document.getElementById("footer-container").innerHTML = data;
+  })
+  .catch((err) => console.error("Footer yüklenemedi:", err));
+
   // Blob yükle
   fetch("../backend/includes/blob.html")
     .then((response) => response.text())

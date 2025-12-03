@@ -3,9 +3,10 @@ footer {
     color: #fff;
     padding: 60px 80px; /* daha uzun görünüm için arttırıldı */
     font-family: 'Arial', sans-serif;
+    width: 100%;
   }
   
-  .footer-container {
+  #footer-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
