@@ -19,19 +19,32 @@ html {
   flex: 1;
   padding-top: 70px;
   padding-bottom: 50px;
-  height: 2500px;
 }
 
 .main .page-one .page-texting {
   color: white;
-  /* border: #ff0099;
-  border-style: inset; */
   height: auto;
   width: 900px;
   position: absolute;
   left: 10%;
   top: 30%;
   font-size: 25px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.main .page-one .page-texting h1 {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3.5rem;
+  color: #00ff88;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.main .page-one .page-texting p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+  font-size: 1.1rem;
 }
 
 .main .page-one .decoration {
@@ -49,9 +62,6 @@ html {
 
 
 .main .page-two .page-texting {
-  color: rgb(255, 0, 93);
-  /* border: #ff0099;
-  border-style: inset; */
   position: absolute;
   height: auto;
   width: 900px;
@@ -60,99 +70,46 @@ html {
   top: 120%;
 }
 
+.main .page-two .page-texting h1 {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3rem;
+  color: #ff0099;
+  text-shadow: 0 0 20px rgba(255, 0, 153, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.main .page-two .page-texting p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
 .main .page-two .decoration {
   position: absolute;
   left: 10%;
   top: 110%;
 }
 
-.register-body .register-container,
-.login-body .login-container {
-  width: 30%;
-  margin: 0 auto;
-  margin-top: 10%;
-}
-
-.register-body form,
-.login-body form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.register-body .register-form h1,
-.login-body .login-form h1 {
-  text-align: center;
-  color: rgb(255, 255, 255);
-}
-
-.register-body form input,
-.login-body form input {
-  width: 70%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1.2px solid rgb(255, 255, 255, 0.151);
-  color: white;
-  background: none;
-  margin: 0 auto;
-}
-
-.register-body form input:focus,
-.login-body form input:focus {
-  width: 70%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1.2px solid rgba(145, 90, 90, 0.151);
-  color: white;
-  background: none;
-  margin: 0 auto;
-}
-
-.register-body form button,
-.login-body form button {
-  border: 1px solid rgba(255, 255, 255, 0.151);
-  width: 40%;
-  height: 50px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: transparent;
-  font-size: 15px;
-  color: white;
-  cursor: pointer;
-  margin: 0 auto;
-  transition: 0.3s;
-  margin-top: 30px;
-}
-
-.register-body form button:hover,
-.login-body form button:hover {
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  width: 40%;
-  height: 50px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: transparent;
-  font-size: 15px;
-  color: white;
-  cursor: pointer;
-  margin: 0 auto;
-  transition: 0.1s;
-  margin-top: 30px;
-}
+/* Authentication styles moved to auth.css */
 
 .test-row-number {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1600px;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
   margin-top: 200px;
+  padding: 0 20px;
 }
 
 .test-column-number {
   display: flex;
   flex-wrap: wrap;
-  gap: 100px;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
 }
 
 .card-container {
@@ -163,12 +120,19 @@ html {
   margin-top: 6%;
 }
 
-.blog-container{
+.blog-container {
   width: 100%;
+  max-width: 1800px;
   align-items: center;
-  margin: 0 auto;
-  margin-left: 4%;
-  
+  margin: 100px auto 50px;
+  padding: 0 20px;
+}
+
+.card-blog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
 }
 
 .main .page-two .decoration #abstract-model {
@@ -178,4 +142,79 @@ html {
 .main .page-one .decoration #chain-model {
   width: 700px;
   height: 700px;
+}
+
+/* Responsive Design for Index Page */
+@media (max-width: 1024px) {
+  .main .page-one .page-texting,
+  .main .page-two .page-texting {
+    width: 80%;
+    left: 10%;
+    position: relative;
+    top: auto;
+    margin: 30px auto;
+  }
+
+  .main .page-one .page-texting h1,
+  .main .page-two .page-texting h1 {
+    font-size: 2.5rem;
+  }
+
+  .main .page-one .decoration,
+  .main .page-two .decoration {
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 30px auto;
+    text-align: center;
+  }
+
+  .main .page-one .decoration #chain-model,
+  .main .page-two .decoration #abstract-model {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 80px;
+  }
+
+  .main .page-one .page-texting,
+  .main .page-two .page-texting {
+    width: 90%;
+    font-size: 18px;
+  }
+
+  .main .page-one .page-texting h1,
+  .main .page-two .page-texting h1 {
+    font-size: 2rem;
+  }
+
+  .main .page-one .page-texting p,
+  .main .page-two .page-texting p {
+    font-size: 1rem;
+  }
+
+  .test-row-number {
+    margin-top: 150px;
+  }
+
+  .test-column-number {
+    gap: 20px;
+  }
+
+  .blog-container {
+    margin-top: 80px;
+  }
+
+  .blog-title {
+    font-size: 2rem;
+  }
+
+  .blog-subtitle {
+    font-size: 1rem;
+  }
 }

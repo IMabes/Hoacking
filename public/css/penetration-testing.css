@@ -1,0 +1,492 @@
+/* Penetration Testing Training Page Styling */
+
+.training-body {
+    height: auto;
+    min-height: 100vh;
+    background: radial-gradient(
+        circle at top left,
+        #0f081e 10%,
+        #0b0128 60%,
+        #0a021a 100%
+    );
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+.training-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Training Header */
+.training-header {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 15px;
+    padding: 50px 40px;
+    margin-bottom: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(255, 0, 153, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.training-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff0099, #00ff88, transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.header-content {
+    text-align: center;
+}
+
+.training-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 3rem;
+    color: #00ff88;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    margin: 0 0 15px 0;
+    letter-spacing: 2px;
+}
+
+.training-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 30px 0;
+}
+
+.training-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-number {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2.5rem;
+    color: #00ff88;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Section Title */
+.section-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2rem;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+    letter-spacing: 1px;
+}
+
+/* Modules Section */
+.modules-section {
+    margin-bottom: 40px;
+}
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+/* Module Card */
+.module-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.module-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 153, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.module-card:hover {
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 30px rgba(255, 0, 153, 0.3);
+    transform: translateY(-5px);
+}
+
+.module-card:hover::before {
+    left: 100%;
+}
+
+.module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.module-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
+}
+
+.module-number {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(255, 0, 153, 0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 0, 153, 0.3);
+}
+
+.module-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.module-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1.4rem;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    line-height: 1.3;
+}
+
+.module-description {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.module-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.module-time {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.module-badge {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.module-badge.completed {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* Progress Bar */
+.module-progress {
+    margin-top: 10px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0099, #00ff88);
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Buttons */
+.start-btn,
+.review-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.start-btn {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: #00ff88;
+}
+
+.start-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    transform: translateY(-2px);
+}
+
+.review-btn {
+    background: rgba(255, 0, 153, 0.1);
+    border: 1px solid rgba(255, 0, 153, 0.3);
+    color: #ff0099;
+}
+
+.review-btn:hover {
+    background: rgba(255, 0, 153, 0.2);
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 20px rgba(255, 0, 153, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .modules-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .training-title {
+        font-size: 2rem;
+    }
+
+    .training-subtitle {
+        font-size: 1rem;
+    }
+
+    .training-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .modules-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .module-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .training-container {
+        padding: 0 10px;
+    }
+
+    .training-header {
+        padding: 30px 20px;
+    }
+
+    .training-title {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .module-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Featured Training Card on Test Page */
+.training-featured-card {
+    max-width: 1200px;
+    margin: 100px auto 50px;
+    padding: 0 20px;
+}
+
+.featured-card-content {
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px solid rgba(255, 0, 153, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(255, 0, 153, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-card-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff0099, #00ff88, transparent);
+    animation: scan 3s linear infinite;
+}
+
+.featured-card-content:hover {
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 50px rgba(255, 0, 153, 0.4);
+    transform: translateY(-5px);
+}
+
+.featured-card-icon {
+    font-size: 5rem;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.5));
+    flex-shrink: 0;
+}
+
+.featured-card-info {
+    flex: 1;
+}
+
+.featured-card-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2rem;
+    color: #00ff88;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    margin: 0 0 15px 0;
+    letter-spacing: 1px;
+}
+
+.featured-card-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+}
+
+.featured-card-btn {
+    padding: 15px 40px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 30px;
+    color: #00ff88;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+.featured-card-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .training-featured-card {
+        margin: 80px auto 40px;
+    }
+
+    .featured-card-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+
+    .featured-card-icon {
+        font-size: 4rem;
+    }
+
+    .featured-card-title {
+        font-size: 1.5rem;
+    }
+
+    .featured-card-description {
+        font-size: 1rem;
+    }
+
+    .featured-card-btn {
+        width: 100%;
+        padding: 12px 30px;
+    }
+}
+

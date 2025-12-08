@@ -6,6 +6,7 @@
     <title>Kayıt Sayfası</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 <body class="register-body">
     <script src="js/includes.js"></script>
@@ -14,15 +15,72 @@
     <div class="register-container">
         <div class="register-form">
             <h1>Kayıt Ol</h1>
-            <form action="">
-                <input type="text" placeholder="Adınız">
-                <input type="text" placeholder="Soyadınız">
-                <input type="text" placeholder="Kullanıcı adınız">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Şifre">
-                <button>Kayıt Ol</button>
+            <form id="registerForm">
+                <input type="text" name="name" id="name" placeholder="Adınız" required>
+                <input type="text" name="surname" id="surname" placeholder="Soyadınız" required>
+                <input type="text" name="nickname" id="nickname" placeholder="Kullanıcı adınız" required>
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <input type="password" name="password" id="password" placeholder="Şifre" required>
+                <button type="submit">Kayıt Ol</button>
+                <div id="registerMessage" style="display: none;"></div>
+                <div class="auth-link">
+                    Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
+                </div>
             </form>
         </div>
     </div>
+    
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const surname = document.getElementById('surname').value;
+    const nickname = document.getElementById('nickname').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const messageDiv = document.getElementById('registerMessage');
+
+    try {
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                uname: name,
+                usurname: surname,
+                unickname: nickname,
+                umail: email,
+                upasswd: password
+            })
+        });
+
+        const data = await response.json();
+
+        // Backend success = userId varsa
+        if (data.userId && data.user) {
+            // Save user data to localStorage
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            
+            messageDiv.style.color = 'green';
+            messageDiv.textContent = 'Kayıt başarılı! Yönlendiriliyorsunuz...';
+            messageDiv.style.display = 'block';
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        } else {
+            messageDiv.style.color = 'red';
+            messageDiv.textContent = data.message || 'Kayıt başarısız!';
+            messageDiv.style.display = 'block';
+        }
+
+    } catch (error) {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+        messageDiv.style.display = 'block';
+        console.error('Error:', error);
+    }
+});
+    </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
     );
   }
 
-  .register-body, .login-body, .test-body, .blog-body{ 
+  .register-body, .login-body, .test-body, .blog-body, .profile-body, .training-body{ 
     height: auto;
     background: radial-gradient(
     circle at top left,

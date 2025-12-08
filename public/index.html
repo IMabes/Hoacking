@@ -6,6 +6,7 @@
     <title>Hocking</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/page.css" />
+    <link rel="stylesheet" href="css/index.css" />
     <script
       type="module"
       src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
@@ -13,66 +14,197 @@
   </head>
   <body class="index-body">
     <script src="js/includes.js"></script>
+    <script src="js/activity-tracker.js"></script>
     <div id="navbar"></div>
     <div class="main">
-      <div class="page-one">
-        <div class="page-texting">
-          <h1>WELCOME!</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus
-            vitae magni repudiandae voluptatem odio dicta aspernatur ipsa,
-            quibusdam consequuntur, sequi totam nesciunt ullam sunt repellat
-            necessitatibus animi eligendi aut ex! Lorem ipsum dolor sit amet
-            consectetur, adipisicing elit. Delectus vitae magni repudiandae
-            voluptatem odio dicta aspernatur ipsa, quibusdam consequuntur, sequi
-            totam nesciunt ullam sunt repellat necessitatibus animi eligendi aut
-            ex!Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Delectus vitae magni repudiandae voluptatem odio dicta aspernatur
-            ipsa, quibusdam consequuntur, sequi totam nesciunt ullam sunt
-            repellat necessitatibus animi eligendi aut ex! Lorem ipsum dolor sit
-            amet consectetur, adipisicing elit. Delectus vitae magni repudiandae
-            voluptatem odio dicta aspernatur ipsa, quibusdam consequuntur, sequi
-            totam nesciunt ullam sunt repellat necessitatibus animi eligendi aut
-            ex!
-          </p>
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">
+              <span class="gradient-text">WELCOME TO</span>
+              <span class="glow-text">HOCKING</span>
+            </h1>
+            <p class="hero-subtitle">
+              Master the art of cybersecurity. Learn ethical hacking, penetration testing, and network security through hands-on training and real-world scenarios.
+            </p>
+            <div class="hero-buttons">
+              <a href="register.html" class="btn btn-primary">Get Started</a>
+              <a href="test.html" class="btn btn-secondary">Explore Tests</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="decoration">
+              <div id="chain-model"></div>
+            </div>
+            <div class="floating-elements">
+              <div class="floating-circle circle-1"></div>
+              <div class="floating-circle circle-2"></div>
+              <div class="floating-circle circle-3"></div>
+            </div>
+          </div>
         </div>
-        <div class="decoration">
-          <div id="chain-model"></div>
+        <div class="scroll-indicator">
+          <div class="mouse"></div>
+          <div class="arrow"></div>
         </div>
-      </div>
+      </section>
 
-      <div class="page-two">
-        <div class="decoration">
-          <div id="abstract-model"></div>
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-icon">🔒</div>
+            <div class="stat-number" data-target="1000">0</div>
+            <div class="stat-label">Active Learners</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-number" data-target="50">0</div>
+            <div class="stat-label">Security Challenges</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-number" data-target="500">0</div>
+            <div class="stat-label">Certificates Issued</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-number" data-target="24">0</div>
+            <div class="stat-label">Hours of Content</div>
+          </div>
         </div>
-        <div class="page-texting">
-          <h1>WHAT İS CYBER SECURİTY?</h1>
-          <p>
-            Cybersecurity is the practice of protecting systems, networks, and
-            programs from digital attacks. These cyberattacks are usually aimed
-            at accessing, changing, or destroying sensitive information;
-            extorting money from users through ransomware; or interrupting
-            normal business processes. Implementing effective cybersecurity
-            measures is particularly challenging today because there are more
-            devices than people, and attackers are becoming more innovative. A
-            successful cybersecurity posture has multiple layers of protection
-            spread across the computers, networks, programs, or data that one
-            intends to keep safe. In an organization, a unified threat
-            management gateway system can automate integrations across products
-            and accelerate key security operations functions: detection,
-            investigation, and remediation. People, processes, and technology
-            must all complement one another to create an effective defense from
-            cyberattacks.
-            lorem
-          </p>
-        
-        </div>
-      </div>
+      </section>
 
-      <div class="page-three">
-        
-      </div>
+      <!-- About Section -->
+      <section class="about-section">
+        <div class="about-content">
+          <div class="about-visual">
+            <div class="decoration">
+              <div id="abstract-model"></div>
+            </div>
+          </div>
+          <div class="about-text">
+            <h2 class="section-title">
+              <span class="title-accent">WHAT IS</span>
+              <span class="gradient-text">CYBER SECURITY?</span>
+            </h2>
+            <p class="section-description">
+              Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks. 
+              These cyberattacks are usually aimed at accessing, changing, or destroying sensitive information; 
+              extorting money from users through ransomware; or interrupting normal business processes.
+            </p>
+            <p class="section-description">
+              Implementing effective cybersecurity measures is particularly challenging today because there are 
+              more devices than people, and attackers are becoming more innovative. A successful cybersecurity 
+              posture has multiple layers of protection spread across computers, networks, programs, and data.
+            </p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <span class="feature-icon">🛡️</span>
+                <span>Multi-layer Protection</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🔍</span>
+                <span>Threat Detection</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">⚙️</span>
+                <span>Automated Security</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section">
+        <h2 class="section-title-center">
+          <span class="gradient-text">WHY CHOOSE HOCKING?</span>
+        </h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-card-icon">🎓</div>
+            <h3>Expert Training</h3>
+            <p>Learn from industry professionals with years of real-world experience in cybersecurity.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card-icon">💻</div>
+            <h3>Hands-On Practice</h3>
+            <p>Practice on real-world scenarios and challenges to build practical skills.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card-icon">📜</div>
+            <h3>Certification</h3>
+            <p>Earn recognized certificates upon completion of courses and challenges.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card-icon">🚀</div>
+            <h3>Career Ready</h3>
+            <p>Get job-ready with skills that employers are looking for in the cybersecurity field.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <div class="cta-content">
+          <h2 class="cta-title">Ready to Start Your Cybersecurity Journey?</h2>
+          <p class="cta-text">Join thousands of learners and start mastering cybersecurity today.</p>
+          <a href="register.html" class="btn btn-cta">Join Now - It's Free</a>
+        </div>
+      </section>
     </div>
     <div id="footer-container"></div>
+    
+    <script>
+      // Animated counter for stats
+      function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            element.textContent = target;
+            clearInterval(timer);
+          } else {
+            element.textContent = Math.floor(start);
+          }
+        }, 16);
+      }
+
+      // Intersection Observer for animations
+      const observerOptions = {
+        threshold: 0.3,
+        rootMargin: '0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+            
+            // Animate stats if it's a stat card
+            if (entry.target.classList.contains('stat-card')) {
+              const statNumber = entry.target.querySelector('.stat-number');
+              const target = parseInt(statNumber.getAttribute('data-target'));
+              if (!statNumber.classList.contains('animated')) {
+                statNumber.classList.add('animated');
+                animateCounter(statNumber, target);
+              }
+            }
+          }
+        });
+      }, observerOptions);
+
+      // Observe all stat cards and feature cards
+      document.addEventListener('DOMContentLoaded', () => {
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach(card => observer.observe(card));
+        
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => observer.observe(card));
+      });
+    </script>
   </body>
 </html>

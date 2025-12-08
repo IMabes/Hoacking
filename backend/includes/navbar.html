@@ -13,9 +13,16 @@
       <a href="#">Forum</a>
     </div>
 
-    <div class="login-register">
+    <!-- Login/Register Buttons (shown when not logged in) -->
+    <div class="login-register" id="authButtons">
       <button onclick="window.location.href='../public/register.html'">KAYIT OL</button>
       <button onclick="window.location.href='../public/login.html'">GİRİŞ YAP</button>
+    </div>
+
+    <!-- Profile and Logout Buttons (shown when logged in) -->
+    <div class="login-register" id="profileButton" style="display: none;">
+      <button onclick="window.location.href='../public/profile.html'">PROFİL</button>
+      <button onclick="logout()">ÇIKIŞ</button>
     </div>
   </nav>
   

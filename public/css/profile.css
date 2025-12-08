@@ -1,0 +1,587 @@
+/* Profile Page Styling - Cybersecurity Theme */
+
+.profile-body {
+    height: auto;
+    min-height: 100vh;
+    background: radial-gradient(
+        circle at top left,
+        #0f081e 10%,
+        #0b0128 60%,
+        #0a021a 100%
+    );
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+.profile-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Profile Header Section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(255, 0, 153, 0.1);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff0099, #00ff88, transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.profile-avatar-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.avatar-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, transparent 70%);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-username {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2.5rem;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    margin: 0 0 15px 0;
+    letter-spacing: 2px;
+}
+
+.profile-bio {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 20px 0;
+    line-height: 1.6;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.profile-bio[contenteditable="true"] {
+    border-color: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.05);
+    outline: none;
+}
+
+.edit-profile-btn {
+    padding: 12px 30px;
+    background: rgba(255, 0, 153, 0.1);
+    border: 1px solid rgba(255, 0, 153, 0.3);
+    border-radius: 25px;
+    color: #fff;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(255, 0, 153, 0.2);
+}
+
+.edit-profile-btn:hover {
+    background: rgba(255, 0, 153, 0.2);
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 25px rgba(255, 0, 153, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Section Titles */
+.section-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1.8rem;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+    letter-spacing: 1px;
+}
+
+/* Overall Progress Panel */
+.progress-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+}
+
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    transform: translateY(-5px);
+}
+
+.stat-value {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2.5rem;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0099, #00ff88);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Courses Section */
+.courses-section {
+    margin-bottom: 40px;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 153, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.course-card:hover {
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 30px rgba(255, 0, 153, 0.3);
+    transform: translateY(-5px);
+}
+
+.course-card:hover::before {
+    left: 100%;
+}
+
+.course-thumbnail {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
+}
+
+.course-content {
+    text-align: center;
+}
+
+.course-category {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.course-title {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.course-progress {
+    margin-bottom: 20px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.continue-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: #00ff88;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.continue-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Badges Section */
+.badges-section {
+    margin-bottom: 40px;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.badge-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.badge-card:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+    transform: translateY(-5px) scale(1.05);
+}
+
+.badge-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.5));
+}
+
+.badge-name {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1.1rem;
+    color: #00ff88;
+    margin: 0 0 10px 0;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.badge-description {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+/* Activity Timeline */
+.activity-section {
+    margin-bottom: 40px;
+}
+
+.activity-timeline {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 60px;
+    bottom: 30px;
+    width: 2px;
+    background: linear-gradient(180deg, #ff0099, #00ff88);
+    opacity: 0.3;
+}
+
+.activity-item {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    flex-shrink: 0;
+    margin-top: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content p {
+    margin: 0 0 5px 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+}
+
+.activity-action {
+    color: #00ff88;
+}
+
+.activity-course {
+    color: #fff;
+    font-weight: 500;
+}
+
+.activity-time {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+}
+
+/* Security Section */
+.security-section {
+    margin-bottom: 40px;
+}
+
+.security-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.security-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 0, 153, 0.2);
+    border-radius: 10px;
+    padding: 20px 25px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.security-item:hover {
+    border-color: rgba(255, 0, 153, 0.4);
+    box-shadow: 0 0 20px rgba(255, 0, 153, 0.2);
+}
+
+.security-info h3 {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 0 0 5px 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.security-info p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.security-btn {
+    padding: 10px 25px;
+    background: rgba(255, 0, 153, 0.1);
+    border: 1px solid rgba(255, 0, 153, 0.3);
+    border-radius: 20px;
+    color: #fff;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.security-btn:hover {
+    background: rgba(255, 0, 153, 0.2);
+    border-color: rgba(255, 0, 153, 0.5);
+    box-shadow: 0 0 20px rgba(255, 0, 153, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .profile-username {
+        font-size: 2rem;
+    }
+
+    .progress-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .security-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .security-btn {
+        width: 100%;
+    }
+
+    .activity-timeline::before {
+        left: 15px;
+    }
+
+    .activity-item {
+        padding-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 0 10px;
+    }
+
+    .profile-header {
+        padding: 20px;
+    }
+
+    .profile-username {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+}
+
