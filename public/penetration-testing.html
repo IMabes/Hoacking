@@ -37,11 +37,11 @@
             </div>
         </div>
 
-        <!-- Modules Grid -->
+        <!-- Modüller Izgara Bölümü -->
         <div class="modules-section">
             <h2 class="section-title">Training Modules</h2>
             <div class="modules-grid" id="modulesGrid">
-                <!-- Modules will be dynamically generated -->
+                <!-- Modüller dinamik olarak oluşturulacak --> 
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
     <div id="footer-container"></div>
 
     <script>
-        // Training modules data
+        // Eğitim modülleri verileri 
         const trainingModules = [
             {
                 id: 1,
@@ -57,7 +57,7 @@
                 description: "Learn the fundamentals of penetration testing, ethical hacking principles, and legal considerations. Understand the penetration testing methodology and framework.",
                 icon: "🎯",
                 progress: 0,
-                status: "not-started", // not-started, in-progress, completed
+                status: "not-started", // not-started, in-progress, completed -> (başlamadı, devam ediyor, tamamlandı)
                 estimatedTime: "2 hours"
             },
             {
@@ -161,7 +161,7 @@
             }
         ];
 
-        // Load user progress from localStorage
+        // Kullanıcı ilerleme durumunu localStorage'dan yükle
         function loadUserProgress() {
             const savedProgress = JSON.parse(localStorage.getItem('penetrationTestingProgress') || '{}');
             
@@ -175,7 +175,7 @@
             updateOverallStats();
         }
 
-        // Save user progress to localStorage
+        // Kullanıcı ilerleme durumunu localStorage'a kaydet
         function saveUserProgress() {
             const progressData = {};
             trainingModules.forEach(module => {
@@ -188,7 +188,7 @@
             updateOverallStats();
         }
 
-        // Update overall statistics
+        // Genel istatistikleri güncelle
         function updateOverallStats() {
             const totalModules = trainingModules.length;
             const completedModules = trainingModules.filter(m => m.status === 'completed').length;
@@ -199,7 +199,7 @@
             document.getElementById('overallProgress').textContent = Math.round(totalProgress) + '%';
         }
 
-        // Render modules
+        // Modülleri render et (görüntüleme)
         function renderModules() {
             const grid = document.getElementById('modulesGrid');
             grid.innerHTML = trainingModules.map(module => {
@@ -244,29 +244,29 @@
             }).join('');
         }
 
-        // Start/Continue module
+        // Modülü başlat/devam et
         function startModule(moduleId) {
             const module = trainingModules.find(m => m.id === moduleId);
             if (!module) return;
             
-            // Update module status
+            // Modül durumunu güncelle
             if (module.status === 'not-started') {
                 module.status = 'in-progress';
-                module.progress = 5; // Initial progress
+                module.progress = 5; // Başlangıç ilerleme
             }
             
             saveUserProgress();
             renderModules();
             
-            // In a real application, navigate to the module content page
+            // Gerçek bir uygulamada, modül içeriği sayfasına yönlendirilecek
             // window.location.href = `module.html?id=${moduleId}`;
             console.log(`Starting module ${moduleId}: ${module.title}`);
             
-            // For demo purposes, show an alert
+            // Demo amaçlı bir alert göster
             alert(`Starting: ${module.title}\n\nIn a full implementation, this would navigate to the module content page.`);
         }
 
-        // Initialize page
+        // Sayfayı başlat
         document.addEventListener('DOMContentLoaded', function() {
             loadUserProgress();
             renderModules();

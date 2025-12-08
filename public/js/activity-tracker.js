@@ -1,14 +1,14 @@
 /**
- * User Activity Tracker
- * Tracks user activity and updates uis_active status
+ * Kullanıcı Aktivite Takipçisi
+ * Kullanıcı aktivitesini takip eder ve uis_active durumunu günceller
  * Implements heartbeat system, page visibility detection, and automatic logout
  */
 
 (function() {
     'use strict';
 
-    const ACTIVITY_PING_INTERVAL = 60000; // Ping every 60 seconds (1 minute)
-    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
+    const ACTIVITY_PING_INTERVAL = 60000; // 60 saniyede bir ping at
+    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 dakika boşta kalma süresi
     const HEARTBEAT_ENDPOINT = 'http://localhost:3000/api/activity/ping';
     const LOGOUT_ENDPOINT = 'http://localhost:3000/logout';
 
@@ -18,7 +18,7 @@
     let isPageVisible = true;
 
     /**
-     * Get user data from localStorage
+     * localStorage'dan kullanıcı verilerini yükle
      */
     function getUserData() {
         try {
@@ -29,7 +29,7 @@
     }
 
     /**
-     * Send heartbeat ping to server
+     * Server'a heartbeat ping at
      */
     async function sendHeartbeat() {
         const userData = getUserData();
@@ -60,19 +60,19 @@
     function updateActivity() {
         lastActivityTime = Date.now();
         
-        // Reset inactivity timer
+        // Boşta kalma süresini sıfırla
         if (inactivityTimer) {
             clearTimeout(inactivityTimer);
         }
         
-        // Set new inactivity timer
+        // Yeni boşta kalma süresi ayarla
         inactivityTimer = setTimeout(() => {
             handleInactivity();
         }, INACTIVITY_TIMEOUT);
     }
 
     /**
-     * Handle user inactivity
+     * Kullanıcı boşta kalma durumunu işle
      */
     function handleInactivity() {
         console.log('User inactive for 30 minutes, logging out...');
@@ -80,7 +80,7 @@
     }
 
     /**
-     * Perform logout and set uis_active to 0
+     * Çıkış işlemi gerçekleştir ve uis_active'ı 0'a çek
      */
     async function performLogout() {
         const userData = getUserData();
@@ -92,7 +92,7 @@
         stopActivityTracking();
 
         try {
-            // Use sendBeacon for reliable logout even if page is closing
+            // sendBeacon kullanarak çıkış işlemi güvenli bir şekilde gerçekleştir
             const blob = new Blob([JSON.stringify({ userId: userData.id })], {
                 type: 'application/json'
             });
@@ -100,7 +100,7 @@
             if (navigator.sendBeacon) {
                 navigator.sendBeacon(LOGOUT_ENDPOINT, blob);
             } else {
-                // Fallback to fetch if sendBeacon is not available
+                // sendBeacon mevcut değilse fetch kullanarak çıkış işlemi gerçekleştir
                 await fetch(LOGOUT_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -112,17 +112,17 @@
             console.error('Logout error:', error);
         }
 
-        // Clear localStorage
+        // localStorage'ı temizle
         localStorage.removeItem('userData');
         
-        // Redirect to home page if not already there
+        // Eğer mevcut sayfa index.html değilse, index.html sayfasına yönlendir
         if (window.location.pathname !== '/index.html' && !window.location.pathname.includes('index.html')) {
             window.location.href = 'index.html';
         }
     }
 
     /**
-     * Start activity tracking
+     * Aktivite takip işlemini başlat
      */
     function startActivityTracking() {
         const userData = getUserData();
@@ -131,14 +131,14 @@
             return;
         }
 
-        // Clear any existing intervals
+        // Mevcut aralıkları temizle -> Mevcut aralıkları temizle
         stopActivityTracking();
 
-        // Initial heartbeat
+        // Başlangıç heartbeat
         sendHeartbeat();
         updateActivity();
 
-        // Set up periodic heartbeat
+        // Periyodik heartbeat ayarla
         pingInterval = setInterval(() => {
             if (isPageVisible) {
                 sendHeartbeat();
@@ -146,7 +146,7 @@
             }
         }, ACTIVITY_PING_INTERVAL);
 
-        // Track user interactions
+        // Kullanıcı interaksiyonlarını takip et
         const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
         activityEvents.forEach(event => {
             document.addEventListener(event, updateActivity, { passive: true });
@@ -156,7 +156,7 @@
     }
 
     /**
-     * Stop activity tracking
+     * Aktivite takip işlemini durdur
      */
     function stopActivityTracking() {
         if (pingInterval) {
@@ -171,26 +171,26 @@
     }
 
     /**
-     * Handle page visibility changes
+     * Sayfa görünürlüğü değişikliklerini işle
      */
     function handleVisibilityChange() {
         isPageVisible = !document.hidden;
         
         if (isPageVisible) {
-            // Page became visible - update activity
+            // Sayfa görünür oldu - aktiviteyi güncelle
             updateActivity();
             sendHeartbeat();
         }
     }
 
     /**
-     * Handle page unload (user closes tab/window)
+     * Sayfa yüklenmediğinde (kullanıcı sekme/pencereyi kapatır)
      */
     function handlePageUnload() {
         const userData = getUserData();
         
         if (userData.id) {
-            // Use sendBeacon for reliable logout on page close
+            // sendBeacon kullanarak çıkış işlemi güvenli bir şekilde gerçekleştir
             const blob = new Blob([JSON.stringify({ userId: userData.id })], {
                 type: 'application/json'
             });
@@ -200,34 +200,34 @@
     }
 
     /**
-     * Initialize activity tracker
+     * Aktivite takipçisini başlat
      */
     function init() {
         const userData = getUserData();
         
         if (userData.id) {
-            // User is logged in - start tracking
+            // Kullanıcı giriş yaptı - aktivite takip işlemini başlat
             startActivityTracking();
             
-            // Set up page visibility detection
+            // Sayfa görünürlüğü değişikliklerini takip et
             document.addEventListener('visibilitychange', handleVisibilityChange);
             
-            // Set up page unload handler
+            // Sayfa yüklenmediğinde (kullanıcı sekme/pencereyi kapatır)
             window.addEventListener('beforeunload', handlePageUnload);
             
-            // Set up pagehide handler (for mobile browsers)
+            // Sayfa gizlendiğinde (mobile tarayıcılar için)
             window.addEventListener('pagehide', handlePageUnload);
         }
     }
 
-    // Initialize when DOM is ready
+    // DOM hazır olduğunda başlat
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
 
-    // Export functions for manual control if needed
+    // Gerekirse manuel kontrol için fonksiyonları dışa aktar
     window.activityTracker = {
         start: startActivityTracking,
         stop: stopActivityTracking,

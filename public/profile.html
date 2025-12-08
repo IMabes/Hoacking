@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <!-- Overall Progress Panel -->
+        <!-- Genel İlerleme Paneli Bölümü -->
         <div class="progress-panel">
             <h2 class="section-title">Overall Progress</h2>
             <div class="progress-stats">
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <!-- Courses Section -->
+        <!-- Dersleri Bölümü -->
         <div class="courses-section">
             <h2 class="section-title">My Courses</h2>
             <div class="courses-grid" id="coursesGrid">
@@ -76,15 +76,15 @@
             </div>
         </div>
 
-        <!-- Badges Section -->
+        <!-- Ödülleri(bagde) Bölümü -->
         <div class="badges-section">
             <h2 class="section-title">Earned Badges</h2>
             <div class="badges-grid" id="badgesGrid">
-                <!-- Badges will be dynamically generated -->
+                <!-- Ödülleri(bagde) dinamik olarak oluşturulacak -->
             </div>
         </div>
 
-        <!-- Recent Activity Timeline -->
+        <!-- Son Aktivite Zaman Çizelgesi Bölümü -->
         <div class="activity-section">
             <h2 class="section-title">Recent Activity</h2>
             <div class="activity-timeline" id="activityTimeline">
@@ -92,7 +92,7 @@
             </div>
         </div>
 
-        <!-- Security Settings Section -->
+        <!-- Güvenlik Ayarları Bölümü -->
         <div class="security-section">
             <h2 class="section-title">Security Settings</h2>
             <div class="security-options">
@@ -124,7 +124,7 @@
     <div id="footer-container"></div>
 
     <script>
-        // Sample data - Replace with actual API calls
+        // Örnek veriler - Gerçek API çağrıları ile değiştirilecek
         const sampleCourses = [
             {
                 id: 1,
@@ -178,16 +178,16 @@
             { action: "Completed", course: "Web Application Security - Module 2", time: "1 week ago" }
         ];
 
-        // Load user data from localStorage or API
+        // Load user data from localStorage or API -> localStorage'dan veya API'den kullanıcı verilerini yükle
         async function loadUserData() {
-            // Try to get user data from localStorage (set during login)
+            // Try to get user data from localStorage (set during login) -> localStorage'dan kullanıcı verilerini yükle
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             
             if (userData.nickname) {
                 document.getElementById('profileUsername').textContent = userData.nickname;
             }
             
-            // Fetch from API if user ID is available
+            // API'den veri çekmek için kullanıcı ID'si varsa
             if (userData.id) {
                 try {
                     const response = await fetch(`http://localhost:3000/api/user/${userData.id}`);
@@ -198,7 +198,7 @@
                     }
                 } catch (error) {
                     console.error('Error fetching user data:', error);
-                    // Fallback to localStorage data
+                    // localStorage verilerine geri dönüş
                     if (userData.nickname) {
                         document.getElementById('profileUsername').textContent = userData.nickname;
                     }
@@ -206,7 +206,7 @@
             }
         }
 
-        // Update profile with fetched data
+        // Profili güncelleme
         function updateProfile(user) {
             if (user.nickname) {
                 document.getElementById('profileUsername').textContent = user.nickname;
@@ -216,7 +216,7 @@
             }
         }
 
-        // Render courses
+        // Dersleri görüntüleme
         function renderCourses() {
             const grid = document.getElementById('coursesGrid');
             grid.innerHTML = sampleCourses.map(course => `
@@ -242,7 +242,7 @@
             `).join('');
         }
 
-        // Render badges
+        //Ödülleri(bagde) görüntüleme
         function renderBadges() {
             const grid = document.getElementById('badgesGrid');
             grid.innerHTML = sampleBadges.map(badge => `
@@ -254,7 +254,7 @@
             `).join('');
         }
 
-        // Render activity timeline
+        // Aktivite zaman çizelgesini görüntüleme
         function renderActivity() {
             const timeline = document.getElementById('activityTimeline');
             timeline.innerHTML = sampleActivities.map(activity => `
@@ -268,19 +268,19 @@
             `).join('');
         }
 
-        // Edit profile functionality
+        // profil düzenleme işlemi
         document.getElementById('editProfileBtn').addEventListener('click', async function() {
             const bio = document.getElementById('profileBio');
             const isEditable = bio.contentEditable === 'true';
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             
             if (isEditable) {
-                // Save bio
+                // bio'yı kaydet
                 bio.contentEditable = 'false';
                 this.textContent = 'Edit Profile';
                 this.disabled = true;
                 
-                // Save bio to backend
+                // bio'yı backend'e kaydet
                 if (userData.id) {
                     try {
                         const response = await fetch(`http://localhost:3000/api/user/${userData.id}/bio`, {
@@ -307,16 +307,16 @@
         });
 
         function continueCourse(courseId) {
-            // Navigate to course page
+            // Ders sayfasına yönlendir
             console.log('Continue course:', courseId);
             // window.location.href = `course.html?id=${courseId}`;
         }
 
-        // Update navbar to show profile link
+        // Navbar'ı güncelle ve profil linkini göster
         function updateNavbar() {
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             if (userData.id) {
-                // Update login/register buttons to show profile
+                // Giriş/Kayıt düğmelerini güncelle ve profil linkini göster
                 const loginRegisterDiv = document.querySelector('.login-register');
                 if (loginRegisterDiv) {
                     loginRegisterDiv.innerHTML = `
@@ -327,23 +327,23 @@
             }
         }
 
-        // Logout function
+        // Çıkış işlemini gerçekleştir
         function logout() {
             localStorage.removeItem('userData');
             window.location.href = 'index.html';
         }
 
-        // Make logout available globally
+        // Çıkış işlemini global olarak kullanılabilir hale getir
         window.logout = logout;
 
-        // Initialize page
+        // Sayfayı başlat
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             renderCourses();
             renderBadges();
             renderActivity();
             
-            // Wait for navbar to load, then update it
+            // Navbar'ın yüklenmesini bekle, ardından güncelle
             setTimeout(updateNavbar, 500);
         });
     </script>

@@ -1,27 +1,27 @@
-// Navbar authentication functions
+// Navbar kimlik doğrulama işlevleri
 function updateNavbarAuth() {
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   const authButtons = document.getElementById('authButtons');
   const profileButton = document.getElementById('profileButton');
   
   if (userData.id) {
-    // User is logged in - show profile button, hide login/register buttons
+    // Kullanıcı giriş yaptı - profil düğmesini göster, giriş/kayıt düğmelerini gizle
     if (authButtons) authButtons.style.display = 'none';
     if (profileButton) profileButton.style.display = 'flex';
   } else {
-    // User is not logged in - show login/register buttons, hide profile button
+    // Kullanıcı giriş yapmamış - giriş/kayıt düğmelerini göster, profil düğmesini gizle
     if (authButtons) authButtons.style.display = 'flex';
     if (profileButton) profileButton.style.display = 'none';
   }
 }
 
-// Logout function
+// Çıkış işlevi
 async function logout() {
-  // Use activity tracker's logout function if available
+  // Aktivite takipçisinin çıkış işlevini kullanabilirsin
   if (window.activityTracker && window.activityTracker.logout) {
     window.activityTracker.logout();
   } else {
-    // Fallback to manual logout
+    // Manuel çıkış işlemi
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     
     if (userData.id) {
@@ -37,27 +37,27 @@ async function logout() {
     }
     
     localStorage.removeItem('userData');
-    // Trigger custom event to update navbar
+    // Özel olayı tetikle ve navbar'ı güncelle
     window.dispatchEvent(new Event('userLogout'));
-    // Update navbar immediately
+    // Navbar'ı hemen güncelle
     updateNavbarAuth();
-    // Redirect to index.html (relative to current page)
+    // index.html sayfasına yönlendir (şu anki sayfanın konumuna göre)
     const currentPath = window.location.pathname;
     const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
     window.location.href = basePath + '/index.html';
   }
 }
 
-// Make functions globally available
+// Fonksiyonları global olarak kullanılabilir hale getir
 window.logout = logout;
 window.updateNavbarAuth = updateNavbarAuth;
 
-// Handle page unload (when user closes tab/window)
+// Sayfa yüklenmediğinde (kullanıcı sekme/pencereyi kapatır)
 window.addEventListener('beforeunload', async function() {
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
   
   if (userData.id) {
-    // Use navigator.sendBeacon for reliable logout on page close
+    // sendBeacon kullanarak çıkış işlemi güvenli bir şekilde gerçekleştir
     const blob = new Blob([JSON.stringify({ userId: userData.id })], {
       type: 'application/json'
     });
@@ -65,14 +65,14 @@ window.addEventListener('beforeunload', async function() {
   }
 });
 
-// Listen for storage changes (when user logs in/out in another tab)
+// Depolama değişikliklerini takip et (kullanıcı başka bir sekmede giriş/çıkış yapıldığında)
 window.addEventListener('storage', function(e) {
   if (e.key === 'userData') {
     updateNavbarAuth();
   }
 });
 
-// Listen for custom events
+// Özel olayları takip et
 window.addEventListener('userLogin', function() {
   updateNavbarAuth();
 });
@@ -82,19 +82,19 @@ window.addEventListener('userLogout', function() {
 });
 
 function loadIncludes() {
-  // Navbar yükle
+  // navbar.html dosyasını yükle
   fetch("../backend/includes/navbar.html")
     .then((response) => response.text())
     .then((data) => {
       document.getElementById("navbar").innerHTML = data;
-      // Update navbar auth state after loading
+      // navbar auth durumunu yükleme sonrası güncelle
       setTimeout(() => {
         updateNavbarAuth();
       }, 50);
     })
     .catch((err) => console.error("Navbar yüklenemedi:", err));
 
-    // footer yükle
+    // footer.html dosyasını yükle
   fetch("../backend/includes/footer.html")
   .then((response) => response.text())
   .then((data) => {
@@ -102,7 +102,7 @@ function loadIncludes() {
   })
   .catch((err) => console.error("Footer yüklenemedi:", err));
 
-  // Blob yükle
+  // blob.html dosyasını yükle
   fetch("../backend/includes/blob.html")
     .then((response) => response.text())
     .then((data) => {
@@ -110,7 +110,7 @@ function loadIncludes() {
     })
     .catch((err) => console.error("Blob yüklenemedi:", err));
 
-  //kart ekleme TEST SAYFASI
+  // card.html dosyasını yükle (test sayfası)
   fetch("../backend/includes/card.html")
     .then((response) => response.text())
     .then((data) => {

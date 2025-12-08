@@ -1,14 +1,14 @@
-// Global logout handler for all pages
-// This ensures uis_active is set to 0 when user closes the page
+// Tüm sayfalar için global çıkış işleyicisi
+// Bu, kullanıcı sayfayı kapatırken uis_active'ı 0'a çeker
 
 (function() {
-    // Handle page unload (when user closes tab/window or navigates away)
+    // Sayfa yüklenmediğinde (kullanıcı sekme/pencereyi kapatır veya başka bir sayfaya geçer)
     window.addEventListener('beforeunload', async function() {
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         
         if (userData.id) {
-            // Use navigator.sendBeacon for reliable logout on page close
-            // sendBeacon sends data even if the page is closing
+            // sendBeacon kullanarak çıkış işlemi güvenli bir şekilde gerçekleştir
+            // sendBeacon sayfa kapatılırken bile veri gönderir
             const blob = new Blob([JSON.stringify({ userId: userData.id })], {
                 type: 'application/json'
             });
@@ -17,11 +17,11 @@
         }
     });
 
-    // Also handle visibility change (when user switches tabs)
+    // Ayrıca sayfa görünürlüğü değişikliklerini işle (kullanıcı sekme/pencereyi değiştirir)
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            // Page is now hidden, but don't logout yet
-            // Only logout on actual page close
+            // Sayfa gizlendi, ancak çıkış yapılmadı
+            // Sadece sayfa kapatıldığında çıkış yapılır
         }
     });
 })();
