@@ -81,6 +81,258 @@ window.addEventListener('userLogout', function() {
   updateNavbarAuth();
 });
 
+// Blog yazılarını veritabanından yükle ve dinamik kartlar oluştur
+async function loadBlogs() {
+  try {
+    console.log("=== Blog yazıları yükleniyor ===");
+    
+    // Container'ı bul
+    const container = document.getElementById("blogs-container");
+    if (!container) {
+      console.error("Blog container bulunamadı!");
+      return;
+    }
+
+    // Container'ı temizle
+    container.innerHTML = '';
+
+    // Önce card.html template'ini yükle
+    console.log("Blog card template yükleniyor...");
+    const cardTemplateResponse = await fetch("../backend/includes/card.html");
+    if (!cardTemplateResponse.ok) {
+      throw new Error(`Card template yüklenemedi: ${cardTemplateResponse.status}`);
+    }
+    const cardTemplateHtml = await cardTemplateResponse.text();
+    console.log("Blog card template yüklendi.");
+    
+    const temp = document.createElement("div");
+    temp.innerHTML = cardTemplateHtml;
+
+    // CSS <link> varsa head'e ekle (bir kere)
+    const styleLink = temp.querySelector("link[rel='stylesheet']");
+    if (
+      styleLink &&
+      !document.querySelector(`link[href="${styleLink.href}"]`)
+    ) {
+      document.head.appendChild(styleLink.cloneNode());
+    }
+
+    // Template'den .card-blog yapısını al
+    const cardTemplate = temp.querySelector(".card-blog");
+    if (!cardTemplate) {
+      console.error("Blog card template içinde .card-blog bulunamadı!");
+      return;
+    }
+    console.log("Blog card template yapısı alındı.");
+
+    // Veritabanından blog yazılarını çek
+    console.log("API'den blog yazıları çekiliyor...");
+    const blogsResponse = await fetch("http://localhost:3000/api/blogs");
+    
+    if (!blogsResponse.ok) {
+      // API hatası - sessizce container'ı gizle, hata mesajı gösterme
+      console.warn("API hatası:", blogsResponse.status);
+      container.style.display = 'none';
+      return;
+    }
+    
+    const blogsData = await blogsResponse.json();
+    console.log("API Response:", blogsData);
+
+    if (!blogsData.success) {
+      // Başarısız response - sessizce container'ı gizle
+      console.warn("Blog yazıları yüklenemedi:", blogsData.message || "Bilinmeyen hata");
+      container.style.display = 'none';
+      return;
+    }
+
+    if (!blogsData.blogs || blogsData.blogs.length === 0) {
+      // Veri yok - sessizce container'ı gizle
+      console.log("Veritabanında blog yazısı bulunamadı. Container gizleniyor.");
+      container.style.display = 'none';
+      return;
+    }
+
+    const blogs = blogsData.blogs;
+    console.log(`${blogs.length} blog yazısı bulundu.`);
+
+    // Container'ı görünür yap
+    container.style.display = '';
+
+    // Her blog yazısı için kart oluştur ve ekle
+    // Görsel yoksa img'yi gizlemek için fallback kullanmıyoruz
+    blogs.forEach((blog, index) => {
+      const cardClone = cardTemplate.cloneNode(true);
+      
+      // Kart içeriğini güncelle
+      const titleElement = cardClone.querySelector("h1");
+      const descriptionElement = cardClone.querySelector("p");
+      const imageElement = cardClone.querySelector("img");
+      
+      if (titleElement) {
+        titleElement.textContent = blog.title || "BAŞLIK";
+      }
+      
+      if (descriptionElement) {
+        descriptionElement.textContent = blog.description || "Açıklama bulunmuyor.";
+      }
+
+      if (imageElement) {
+        if (blog.image_url) {
+          imageElement.src = blog.image_url;
+          imageElement.alt = blog.title || "Blog görseli";
+          imageElement.style.display = "";
+        } else {
+          imageElement.style.display = "none";
+        }
+      }
+
+      // Kartı container'a ekle
+      container.appendChild(cardClone);
+      console.log(`✓ Blog kart ${index + 1} oluşturuldu: "${blog.title}"`);
+    });
+
+    console.log("=== Blog yazıları başarıyla yüklendi! ===");
+
+  } catch (err) {
+    // Hata durumunda sadece console'da log tut, kullanıcıya hata mesajı gösterme
+    console.error("❌ Blog yazıları yüklenirken hata oluştu:", err);
+    console.error("Hata detayı:", err.message);
+    
+    // Container'ı sessizce gizle
+    const container = document.getElementById("blogs-container");
+    if (container) {
+      container.style.display = 'none';
+    }
+  }
+}
+
+// Kursları veritabanından yükle ve dinamik kartlar oluştur
+async function loadCourses() {
+  try {
+    console.log("=== Kurslar yükleniyor ===");
+    
+    // Container'ı bul
+    const container = document.getElementById("courses-container");
+    if (!container) {
+      console.error("Kurs container bulunamadı!");
+      return;
+    }
+
+    // Container'ı temizle
+    container.innerHTML = '';
+
+    // Önce card.html template'ini yükle
+    console.log("Card template yükleniyor...");
+    const cardTemplateResponse = await fetch("../backend/includes/card.html");
+    if (!cardTemplateResponse.ok) {
+      throw new Error(`Card template yüklenemedi: ${cardTemplateResponse.status}`);
+    }
+    const cardTemplateHtml = await cardTemplateResponse.text();
+    console.log("Card template yüklendi.");
+    
+    const temp = document.createElement("div");
+    temp.innerHTML = cardTemplateHtml;
+
+    // CSS <link> varsa head'e ekle (bir kere)
+    const styleLink = temp.querySelector("link[rel='stylesheet']");
+    if (
+      styleLink &&
+      !document.querySelector(`link[href="${styleLink.href}"]`)
+    ) {
+      document.head.appendChild(styleLink.cloneNode());
+    }
+
+    // Template'den .card-test yapısını al
+    const cardTemplate = temp.querySelector(".card-test");
+    if (!cardTemplate) {
+      console.error("Card template içinde .card-test bulunamadı!");
+      return;
+    }
+    console.log("Card template yapısı alındı.");
+
+    // Veritabanından kursları çek
+    console.log("API'den kurslar çekiliyor...");
+    const coursesResponse = await fetch("http://localhost:3000/api/courses");
+    
+    if (!coursesResponse.ok) {
+      // API hatası - sessizce container'ı gizle, hata mesajı gösterme
+      console.warn("API hatası:", coursesResponse.status);
+      container.style.display = 'none';
+      return;
+    }
+    
+    const coursesData = await coursesResponse.json();
+    console.log("API Response:", coursesData);
+
+    if (!coursesData.success) {
+      // Başarısız response - sessizce container'ı gizle
+      console.warn("Kurslar yüklenemedi:", coursesData.message || "Bilinmeyen hata");
+      container.style.display = 'none';
+      return;
+    }
+
+    if (!coursesData.courses || coursesData.courses.length === 0) {
+      // Veri yok - sessizce container'ı gizle
+      console.log("Veritabanında kurs bulunamadı. Container gizleniyor.");
+      container.style.display = 'none';
+      return;
+    }
+
+    const courses = coursesData.courses;
+    console.log(`${courses.length} kurs bulundu.`);
+
+    // Container'ı görünür yap
+    container.style.display = '';
+
+    // Her kurs için kart oluştur ve ekle
+    // Görsel yoksa img'yi gizlemek için fallback kullanmıyoruz
+    courses.forEach((course, index) => {
+      const cardClone = cardTemplate.cloneNode(true);
+      
+      // Kart içeriğini güncelle
+      const titleElement = cardClone.querySelector("h1");
+      const descriptionElement = cardClone.querySelector("p");
+      const imageElement = cardClone.querySelector("img");
+      
+      if (titleElement) {
+        titleElement.textContent = course.title || "BAŞLIK";
+      }
+      
+      if (descriptionElement) {
+        descriptionElement.textContent = course.description || "Açıklama bulunmuyor.";
+      }
+
+      if (imageElement) {
+        if (course.image_url) {
+          imageElement.src = course.image_url;
+          imageElement.alt = course.title || "Kurs görseli";
+          imageElement.style.display = "";
+        } else {
+          imageElement.style.display = "none";
+        }
+      }
+
+      // Kartı container'a ekle
+      container.appendChild(cardClone);
+      console.log(`✓ Kart ${index + 1} oluşturuldu: "${course.title}"`);
+    });
+
+    console.log("=== Kurslar başarıyla yüklendi! ===");
+
+  } catch (err) {
+    // Hata durumunda sadece console'da log tut, kullanıcıya hata mesajı gösterme
+    console.error("❌ Kurslar yüklenirken hata oluştu:", err);
+    console.error("Hata detayı:", err.message);
+    
+    // Container'ı sessizce gizle
+    const container = document.getElementById("courses-container");
+    if (container) {
+      container.style.display = 'none';
+    }
+  }
+}
+
 function loadIncludes() {
   // navbar.html dosyasını yükle
   fetch("../backend/includes/navbar.html")
@@ -110,53 +362,41 @@ function loadIncludes() {
     })
     .catch((err) => console.error("Blob yüklenemedi:", err));
 
-  // card.html dosyasını yükle (test sayfası)
-  fetch("../backend/includes/card.html")
-    .then((response) => response.text())
-    .then((data) => {
-      const temp = document.createElement("div");
-      temp.innerHTML = data;
-
-      // CSS <link> varsa head'e ekle (bir kere)
-      const styleLink = temp.querySelector("link[rel='stylesheet']");
-      if (
-        styleLink &&
-        !document.querySelector(`link[href="${styleLink.href}"]`)
-      ) {
-        document.head.appendChild(styleLink.cloneNode());
-      }
-
-      const cardContent = temp.querySelector(".card-test");
-
-      document.querySelectorAll(".card-test").forEach((card) => {
-        card.innerHTML = cardContent.innerHTML;
+  // Kursları veritabanından çek ve dinamik kartlar oluştur
+  // DOM'un tamamen yüklenmesini bekle - sadece cources.html sayfasında
+  if (window.location.pathname.includes('cources.html')) {
+    // DOMContentLoaded event'ini bekle
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(loadCourses, 100);
+        // Her 10 saniyede bir kursları kontrol et (veri eklendiğinde otomatik güncelleme)
+        setInterval(loadCourses, 10000);
       });
-    })
-    .catch((err) => console.error("Card yüklenemedi:", err));
+    } else {
+      // DOM zaten yüklü
+      setTimeout(loadCourses, 100);
+      // Her 10 saniyede bir kursları kontrol et
+      setInterval(loadCourses, 10000);
+    }
+  }
 
-  //kart ekleme BLOG SAYFASI
-  fetch("../backend/includes/card.html")
-    .then((response) => response.text())
-    .then((data) => {
-      const temp = document.createElement("div");
-      temp.innerHTML = data;
-
-      // CSS <link> varsa head'e ekle (bir kere)
-      const styleLink = temp.querySelector("link[rel='stylesheet']");
-      if (
-        styleLink &&
-        !document.querySelector(`link[href="${styleLink.href}"]`)
-      ) {
-        document.head.appendChild(styleLink.cloneNode());
-      }
-
-      const cardContent = temp.querySelector(".card-blog");
-
-      document.querySelectorAll(".card-blog").forEach((card) => {
-        card.innerHTML = cardContent.innerHTML;
+  // Blog yazılarını veritabanından çek ve dinamik kartlar oluştur
+  // DOM'un tamamen yüklenmesini bekle - sadece blog.html sayfasında
+  if (window.location.pathname.includes('blog.html')) {
+    // DOMContentLoaded event'ini bekle
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(loadBlogs, 100);
+        // Her 10 saniyede bir blog yazılarını kontrol et (veri eklendiğinde otomatik güncelleme)
+        setInterval(loadBlogs, 10000);
       });
-    })
-    .catch((err) => console.error("Card yüklenemedi:", err));
+    } else {
+      // DOM zaten yüklü
+      setTimeout(loadBlogs, 100);
+      // Her 10 saniyede bir blog yazılarını kontrol et
+      setInterval(loadBlogs, 10000);
+    }
+  }
 
     //modeller
   

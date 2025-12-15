@@ -1,5 +1,7 @@
 .index-body{
-    height: 300vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: radial-gradient(
       circle at top left,
       #0f081e 10%,
@@ -10,6 +12,9 @@
 
   .register-body, .login-body, .test-body, .blog-body, .profile-body, .training-body{ 
     height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: radial-gradient(
     circle at top left,
     #0f081e 10%,

@@ -1,6 +1,9 @@
 /* Profile Page Styling - Cybersecurity Theme */
 
 .profile-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
     height: auto;
     min-height: 100vh;
     background: radial-gradient(

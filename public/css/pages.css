@@ -2,6 +2,9 @@
 
 /* Test Page */
 .test-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   min-height: 100vh;
   position: relative;
   padding-top: 80px;
@@ -110,12 +113,15 @@
   min-height: 100vh;
   position: relative;
   padding-top: 80px;
+  display: flex;
+  flex-direction: column;
 }
 
 .blog-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 60px 20px 100px;
+  padding: 60px 20px 0;
+  flex: 1;
 }
 
 .blog-header {
@@ -145,8 +151,8 @@
 
 .card-blog-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
   animation: fadeInUp 1s ease-out;
 }
 

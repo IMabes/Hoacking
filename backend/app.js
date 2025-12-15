@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const connection = require('./connection');
 
 const app = express();
@@ -7,6 +10,17 @@ const app = express();
 // Arakatman
 app.use(cors());
 app.use(express.json());
+// Uploads klasörünü statik servis et
+const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsDir));
+
+// Test endpoint
+app.get('/', (req, res) => {
+    res.json({ message: 'Backend çalışıyor!', status: 'ok' });
+});
 
 app.post('/register', (req, res) => {
     const { uname, usurname, unickname, umail, upasswd } = req.body;
@@ -173,4 +187,168 @@ app.post('/logout', (req, res) => {
     });
 });
 
-app.listen(3000, () => console.log("Server çalışıyor: http://localhost:3000"));
+// Admin summary endpoint - counts
+app.get('/api/admin/summary', async (req, res) => {
+    const queries = {
+        totalUsers: 'SELECT COUNT(*) as cnt FROM users',
+        activeUsers: 'SELECT COUNT(*) as cnt FROM users WHERE uis_active = 1',
+        courses: 'SELECT COUNT(*) as cnt FROM courses',
+        blogs: 'SELECT COUNT(*) as cnt FROM blogs',
+    };
+
+    const runQuery = (sql) =>
+        new Promise((resolve, reject) => {
+            connection.query(sql, (err, results) => {
+                if (err) return reject(err);
+                resolve(results[0]?.cnt || 0);
+            });
+        });
+
+    try {
+        const [totalUsers, activeUsers, courses, blogs] = await Promise.all([
+            runQuery(queries.totalUsers),
+            runQuery(queries.activeUsers),
+            runQuery(queries.courses),
+            runQuery(queries.blogs),
+        ]);
+
+        return res.json({
+            success: true,
+            totalUsers,
+            activeUsers,
+            courses,
+            blogs,
+        });
+    } catch (err) {
+        console.error("DB Error (admin summary):", err);
+        return res.status(500).json({ success: false, message: "Admin özet verileri alınamadı." });
+    }
+});
+
+// Upload endpoint
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadsDir);
+    },
+    filename: function (req, file, cb) {
+        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = path.extname(file.originalname);
+        cb(null, unique + ext);
+    }
+});
+const upload = multer({ storage });
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    if (!req.file) return res.status(400).json({ success: false, message: 'Dosya bulunamadı' });
+    const url = `http://localhost:3000/uploads/${req.file.filename}`;
+    return res.json({ success: true, url });
+});
+
+// Courses endpoint - Tüm kursları getir
+app.get('/api/courses', (req, res) => {
+    const sql = `SELECT id, title, description, image_url, created_at FROM courses ORDER BY created_at DESC`;
+    
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error("DB Error (courses):", err);
+            return res.status(500).json({ message: "Kurslar yüklenirken bir hata oluştu!" });
+        }
+
+        return res.json({
+            success: true,
+            courses: results
+        });
+    });
+});
+
+// Course create
+app.post('/api/courses', (req, res) => {
+    const { title, description, image_url } = req.body;
+    if (!title) return res.status(400).json({ success: false, message: "Başlık gerekli" });
+    const sql = `INSERT INTO courses (title, description, image_url) VALUES (?, ?, ?)`;
+    connection.query(sql, [title, description || null, image_url || null], (err, result) => {
+        if (err) {
+            console.error("DB Error (course insert):", err);
+            return res.status(500).json({ success: false, message: "Kurs eklenemedi" });
+        }
+        return res.json({ success: true, id: result.insertId });
+    });
+});
+
+// Course delete
+app.delete('/api/courses/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE FROM courses WHERE id = ?`;
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("DB Error (course delete):", err);
+            return res.status(500).json({ success: false, message: "Kurs silinemedi" });
+        }
+        return res.json({ success: true, affected: result.affectedRows });
+    });
+});
+
+// Blogs endpoint - Tüm blog yazılarını getir
+app.get('/api/blogs', (req, res) => {
+    // Veritabanındaki sütun isimlerine göre: id, title, description, image_url, created_at
+    const sql = `SELECT id, title, description, image_url, created_at FROM blogs ORDER BY created_at DESC`;
+    
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error("DB Error (blogs):", err);
+            return res.status(500).json({ message: "Blog yazıları yüklenirken bir hata oluştu!" });
+        }
+
+        return res.json({
+            success: true,
+            blogs: results
+        });
+    });
+});
+
+// Blog create
+app.post('/api/blogs', (req, res) => {
+    const { title, description, image_url } = req.body;
+    if (!title) return res.status(400).json({ success: false, message: "Başlık gerekli" });
+    const sql = `INSERT INTO blogs (title, description, image_url) VALUES (?, ?, ?)`;
+    connection.query(sql, [title, description || null, image_url || null], (err, result) => {
+        if (err) {
+            console.error("DB Error (blog insert):", err);
+            return res.status(500).json({ success: false, message: "Blog eklenemedi" });
+        }
+        return res.json({ success: true, id: result.insertId });
+    });
+});
+
+// Blog delete
+app.delete('/api/blogs/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE FROM blogs WHERE id = ?`;
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("DB Error (blog delete):", err);
+            return res.status(500).json({ success: false, message: "Blog silinemedi" });
+        }
+        return res.json({ success: true, affected: result.affectedRows });
+    });
+});
+
+// Users list
+app.get('/api/users', (req, res) => {
+    const sql = `SELECT ID as id, uname, usurname, unickname, umail, uis_active, ucreated_at FROM users ORDER BY ucreated_at DESC`;
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error("DB Error (users):", err);
+            return res.status(500).json({ success: false, message: "Kullanıcılar alınamadı" });
+        }
+        return res.json({ success: true, users: results });
+    });
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log("===================================");
+    console.log(`Server çalışıyor: http://localhost:${PORT}`);
+    console.log(`API Endpoint: http://localhost:${PORT}/api/courses`);
+    console.log("===================================");
+});

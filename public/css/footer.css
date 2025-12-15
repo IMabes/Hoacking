@@ -1,35 +1,40 @@
 footer {
-   background: #0b031f;
-    color: #fff;
-    padding: 60px 80px; /* daha uzun görünüm için arttırıldı */
-    font-family: 'Arial', sans-serif;
-    width: 100%;
-  }
-  
+  background: #0b031f;
+  color: #fff;
+  padding: 60px 80px;
+  font-family: 'Arial', sans-serif;
+  width: 100%;
+  margin: 0;
+  margin-top: auto; /* Footer'ı en alta itmek için */
+  box-sizing: border-box;
+  flex-shrink: 0; /* Footer'ın küçülmesini önle */
+}
+
   #footer-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
   }
-  
+
   /* Sol taraf: logo + yazı */
   .footer-left {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  
-  .footer-logo-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .footer-logo {
-    height: 65px;
-  }
-  
+
+.footer-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-logo {
+  height: 50px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+}
+
   .footer-logo-section h2 {
     font-size: 26px;
     margin: 0;
@@ -41,19 +46,19 @@ footer {
     opacity: 0.7;
     margin-top: 25px;
   }
-  
+
   /* Orta kısım: menü alt alta */
   .footer-center {
     text-align: center;
     flex: 1;
   }
-  
-  .footer-center ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
+
+.footer-center ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
   .footer-center ul li {
     margin-bottom: 12px;
   }

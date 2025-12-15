@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Hocking</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="images/Logo.png" alt="Hocking Logo" />
+        <span>Hocking Admin</span>
+      </div>
+      <nav class="menu">
+        <a class="active" href="#">Genel Bakış</a>
+        <a href="#">Kurslar</a>
+        <a href="#">Blog Yazıları</a>
+        <a href="#">Kullanıcılar</a>
+        <a href="#">Ayarlar</a>
+      </nav>
+      <button class="logout">Çıkış</button>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Admin Panel</p>
+          <h1>Kontrol Merkezi</h1>
+        </div>
+        <div class="actions">
+          <button class="ghost">Önbellek Temizle</button>
+          <button class="primary">Yeni İçerik Ekle</button>
+        </div>
+      </header>
+
+      <section class="stats">
+        <div class="stat-card">
+          <p>Kurslar</p>
+          <h2 id="stat-courses">-</h2>
+          <span class="badge neutral">Güncel</span>
+        </div>
+        <div class="stat-card">
+          <p>Blog Yazıları</p>
+          <h2 id="stat-blogs">-</h2>
+          <span class="badge neutral">Güncel</span>
+        </div>
+        <div class="stat-card">
+          <p>Toplam Kullanıcı</p>
+          <h2 id="stat-users">-</h2>
+          <span class="badge neutral">Genel</span>
+        </div>
+        <div class="stat-card">
+          <p>Aktif Kullanıcı</p>
+          <h2 id="stat-active">-</h2>
+          <span class="badge positive">Anlık</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Kurslar</p>
+            <h2>İçerik Listesi</h2>
+          </div>
+          <div class="panel-actions">
+            <button class="ghost" id="refresh-courses">Yenile</button>
+          </div>
+        </div>
+        <form id="course-form" class="inline-form" enctype="multipart/form-data">
+          <input type="text" name="title" placeholder="Başlık" required />
+          <input type="text" name="description" placeholder="Açıklama" />
+          <input type="text" name="image_url" placeholder="Görsel URL (opsiyonel)" />
+          <label class="file-label">
+            <span>Görsel Yükle</span>
+            <input type="file" name="image_file" accept="image/*" />
+          </label>
+          <button type="submit" class="primary small">Ekle</button>
+        </form>
+        <div class="table">
+          <div class="table-head">
+            <span>Başlık</span>
+            <span>Kategori</span>
+            <span>Görsel</span>
+            <span>Tarih</span>
+            <span>İşlem</span>
+          </div>
+          <div id="courses-table-body" class="table-body"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Blog Yazıları</p>
+            <h2>İçerik Listesi</h2>
+          </div>
+          <div class="panel-actions">
+            <button class="ghost" id="refresh-blogs">Yenile</button>
+          </div>
+        </div>
+        <form id="blog-form" class="inline-form" enctype="multipart/form-data">
+          <input type="text" name="title" placeholder="Başlık" required />
+          <input type="text" name="description" placeholder="Açıklama" />
+          <input type="text" name="image_url" placeholder="Görsel URL (opsiyonel)" />
+          <label class="file-label">
+            <span>Görsel Yükle</span>
+            <input type="file" name="image_file" accept="image/*" />
+          </label>
+          <button type="submit" class="primary small">Ekle</button>
+        </form>
+        <div class="table">
+          <div class="table-head">
+            <span>Başlık</span>
+            <span>Özet</span>
+            <span>Görsel</span>
+            <span>Tarih</span>
+            <span>İşlem</span>
+          </div>
+          <div id="blogs-table-body" class="table-body"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Kullanıcılar</p>
+            <h2>Kullanıcı Listesi</h2>
+          </div>
+          <div class="panel-actions">
+            <button class="ghost" id="refresh-users">Yenile</button>
+          </div>
+        </div>
+        <div class="table">
+          <div class="table-head">
+            <span>Ad</span>
+            <span>Kullanıcı Adı</span>
+            <span>E-posta</span>
+            <span>Durum</span>
+            <span>Kaydı</span>
+          </div>
+          <div id="users-table-body" class="table-body"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="js/admin.js"></script>
+</body>
+</html>
+
