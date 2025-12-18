@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Test</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Navbar Debug Test</h1>
+    
+    <div class="test-section">
+        <h2>1. localStorage Kontrolü</h2>
+        <button onclick="checkLocalStorage()">localStorage Kontrol Et</button>
+        <pre id="localStorageOutput"></pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Navbar Elementleri</h2>
+        <button onclick="checkNavbarElements()">Navbar Elementlerini Kontrol Et</button>
+        <pre id="navbarElementsOutput"></pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. updateNavbarAuth Fonksiyonu</h2>
+        <button onclick="testUpdateNavbar()">updateNavbarAuth Çalıştır</button>
+        <pre id="updateNavbarOutput"></pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Manuel Admin Data Ekle</h2>
+        <button onclick="setAdminData()">Admin Data'yı localStorage'a Ekle</button>
+        <pre id="setAdminOutput"></pre>
+    </div>
+    
+    <div id="navbar"></div>
+    
+    <script src="js/includes.js"></script>
+    
+    <script>
+        function checkLocalStorage() {
+            const userData = localStorage.getItem('userData');
+            const parsed = userData ? JSON.parse(userData) : null;
+            document.getElementById('localStorageOutput').textContent = 
+                'Raw: ' + userData + '\n\nParsed: ' + JSON.stringify(parsed, null, 2) + 
+                '\n\nID: ' + (parsed?.id || 'YOK') + 
+                '\nRole: ' + (parsed?.role || 'YOK');
+        }
+        
+        function checkNavbarElements() {
+            const authButtons = document.getElementById('authButtons');
+            const profileButton = document.getElementById('profileButton');
+            const adminButton = document.getElementById('adminButton');
+            
+            const authDisplay = authButtons ? window.getComputedStyle(authButtons).display : 'BULUNAMADI';
+            const profileDisplay = profileButton ? window.getComputedStyle(profileButton).display : 'BULUNAMADI';
+            const adminDisplay = adminButton ? window.getComputedStyle(adminButton).display : 'BULUNAMADI';
+            
+            document.getElementById('navbarElementsOutput').textContent = 
+                'authButtons: ' + (authButtons ? 'VAR' : 'YOK') + ' | display: ' + authDisplay + '\n' +
+                'profileButton: ' + (profileButton ? 'VAR' : 'YOK') + ' | display: ' + profileDisplay + '\n' +
+                'adminButton: ' + (adminButton ? 'VAR' : 'YOK') + ' | display: ' + adminDisplay;
+        }
+        
+        function testUpdateNavbar() {
+            if (window.updateNavbarAuth) {
+                window.updateNavbarAuth();
+                document.getElementById('updateNavbarOutput').textContent = 
+                    'updateNavbarAuth çağrıldı. Console\'u kontrol edin.';
+                setTimeout(() => {
+                    checkNavbarElements();
+                }, 500);
+            } else {
+                document.getElementById('updateNavbarOutput').textContent = 
+                    'updateNavbarAuth fonksiyonu bulunamadı!';
+            }
+        }
+        
+        function setAdminData() {
+            const adminData = {
+                id: 6,
+                nickname: 'admin',
+                email: '-@gmail.com',
+                name: '-',
+                surname: '',
+                role: 'admin'
+            };
+            localStorage.setItem('userData', JSON.stringify(adminData));
+            document.getElementById('setAdminOutput').textContent = 
+                'Admin data eklendi:\n' + JSON.stringify(adminData, null, 2);
+            
+            setTimeout(() => {
+                if (window.updateNavbarAuth) {
+                    window.updateNavbarAuth();
+                }
+                checkNavbarElements();
+            }, 500);
+        }
+        
+        // Sayfa yüklendiğinde kontrol et
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkLocalStorage();
+                checkNavbarElements();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+

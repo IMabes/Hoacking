@@ -1,19 +1,45 @@
-// Navbar kimlik doğrulama işlevleri
 function updateNavbarAuth() {
-  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-  const authButtons = document.getElementById('authButtons');
-  const profileButton = document.getElementById('profileButton');
-  
-  if (userData.id) {
-    // Kullanıcı giriş yaptı - profil düğmesini göster, giriş/kayıt düğmelerini gizle
-    if (authButtons) authButtons.style.display = 'none';
-    if (profileButton) profileButton.style.display = 'flex';
-  } else {
-    // Kullanıcı giriş yapmamış - giriş/kayıt düğmelerini göster, profil düğmesini gizle
-    if (authButtons) authButtons.style.display = 'flex';
-    if (profileButton) profileButton.style.display = 'none';
+  // localStorage'dan kullanıcıyı oku
+  const userDataStr = localStorage.getItem("userData");
+  let userData = null;
+  try {
+    userData = userDataStr ? JSON.parse(userDataStr) : null;
+  } catch {
+    userData = null;
+  }
+
+  const authButtons = document.getElementById("authButtons");
+  const profileButton = document.getElementById("profileButton");
+  const adminPanelButton = document.getElementById("adminPanelButton");
+
+  // Navbar henüz yüklenmediyse sessizce çık
+  if (!authButtons || !profileButton) return;
+
+  // Giriş yoksa
+  if (!userData || !userData.id) {
+    authButtons.style.display = "flex";
+    profileButton.style.display = "none";
+    if (adminPanelButton) adminPanelButton.style.display = "none";
+    return;
+  }
+
+  // Giriş varsa
+  authButtons.style.display = "none";
+  profileButton.style.display = "flex";
+
+  // Admin kontrolü (role, urole veya nickname 'admin' ise)
+  if (adminPanelButton) {
+    const role = (userData.role || userData.urole || "").toLowerCase();
+    const nick = (userData.nickname || "").toLowerCase();
+
+    if (role === "admin" || nick === "admin") {
+      adminPanelButton.style.display = "inline-block";
+    } else {
+      adminPanelButton.style.display = "none";
+    }
   }
 }
+
 
 // Çıkış işlevi
 async function logout() {
@@ -347,20 +373,26 @@ function loadIncludes() {
     .catch((err) => console.error("Navbar yüklenemedi:", err));
 
     // footer.html dosyasını yükle
-  fetch("../backend/includes/footer.html")
-  .then((response) => response.text())
-  .then((data) => {
-    document.getElementById("footer-container").innerHTML = data;
-  })
-  .catch((err) => console.error("Footer yüklenemedi:", err));
+  const footerContainer = document.getElementById("footer-container");
+  if (footerContainer) {
+    fetch("../backend/includes/footer.html")
+      .then((response) => response.text())
+      .then((data) => {
+        footerContainer.innerHTML = data;
+      })
+      .catch((err) => console.error("Footer yüklenemedi:", err));
+  }
 
   // blob.html dosyasını yükle
-  fetch("../backend/includes/blob.html")
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("blob").innerHTML = data;
-    })
-    .catch((err) => console.error("Blob yüklenemedi:", err));
+  const blobContainer = document.getElementById("blob");
+  if (blobContainer) {
+    fetch("../backend/includes/blob.html")
+      .then((response) => response.text())
+      .then((data) => {
+        blobContainer.innerHTML = data;
+      })
+      .catch((err) => console.error("Blob yüklenemedi:", err));
+  }
 
   // Kursları veritabanından çek ve dinamik kartlar oluştur
   // DOM'un tamamen yüklenmesini bekle - sadece cources.html sayfasında
@@ -398,54 +430,31 @@ function loadIncludes() {
     }
   }
 
-    //modeller
-  
-    fetch('../../backend/includes/model.html')
-    .then(res => res.text())
-    .then(html => {
+  // 3D modeller (sadece ilgili container varsa yükle)
+  fetch("../../backend/includes/model.html")
+    .then((res) => res.text())
+    .then((html) => {
       const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const selectedModel = doc.querySelector('.chain-model'); // istediğin model
-  
-      // Bir model kapsayıcı div olsun, örn: <div id="model-container"></div> sayfanda
-      const container = document.getElementById('chain-model');
-      container.innerHTML = '';  // varsa içeriği temizle
-      container.appendChild(selectedModel); // yeni modeli ekle
-    });
-  
+      const doc = parser.parseFromString(html, "text/html");
 
+      const chainModel = doc.querySelector(".chain-model");
+      const chainContainer = document.getElementById("chain-model");
+      if (chainModel && chainContainer) {
+        chainContainer.innerHTML = "";
+        chainContainer.appendChild(chainModel);
+      }
 
-
-    fetch('../../backend/includes/model.html')
-    .then(res => res.text())
-    .then(html => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const selectedModel = doc.querySelector('.abstract-model'); // istediğin model
-  
-      // Bir model kapsayıcı div olsun, örn: <div id="model-container"></div> sayfanda
-      const container = document.getElementById('abstract-model');
-      container.innerHTML = '';  // varsa içeriği temizle
-      container.appendChild(selectedModel); // yeni modeli ekle
-    });
-  
-    
-  
-  
-
+      const abstractModel = doc.querySelector(".abstract-model");
+      const abstractContainer = document.getElementById("abstract-model");
+      if (abstractModel && abstractContainer) {
+        abstractContainer.innerHTML = "";
+        abstractContainer.appendChild(abstractModel);
+      }
+    })
+    .catch((err) => console.error("Model yüklenemedi:", err));
 }
 
-// Sayfa yüklendiğinde çalıştır
-document.addEventListener("DOMContentLoaded", function() {
+// Sayfa yüklendiğinde tüm include'ları yükle
+document.addEventListener("DOMContentLoaded", function () {
   loadIncludes();
-  // Also update navbar when DOM is ready
-  setTimeout(updateNavbarAuth, 100);
 });
-
-// Also update navbar immediately if DOM is already loaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', updateNavbarAuth);
-} else {
-  // DOM is already loaded, update immediately
-  setTimeout(updateNavbarAuth, 50);
-}

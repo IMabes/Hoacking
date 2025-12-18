@@ -17,11 +17,11 @@
         <span>Hocking Admin</span>
       </div>
       <nav class="menu">
-        <a class="active" href="#">Genel Bakış</a>
-        <a href="#">Kurslar</a>
-        <a href="#">Blog Yazıları</a>
-        <a href="#">Kullanıcılar</a>
-        <a href="#">Ayarlar</a>
+        <a class="active" href="#" data-section="overview">Genel Bakış</a>
+        <a href="#" data-section="courses">Kurslar</a>
+        <a href="#" data-section="blogs">Blog Yazıları</a>
+        <a href="#" data-section="users">Kullanıcılar</a>
+        <a href="#" data-section="settings">Ayarlar</a>
       </nav>
       <button class="logout">Çıkış</button>
     </aside>
@@ -38,7 +38,7 @@
         </div>
       </header>
 
-      <section class="stats">
+      <section class="stats" data-section-panel="overview">
         <div class="stat-card">
           <p>Kurslar</p>
           <h2 id="stat-courses">-</h2>
@@ -61,7 +61,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-section-panel="courses">
         <div class="panel-header">
           <div>
             <p class="eyebrow">Kurslar</p>
@@ -93,7 +93,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-section-panel="blogs">
         <div class="panel-header">
           <div>
             <p class="eyebrow">Blog Yazıları</p>
@@ -125,7 +125,7 @@
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-section-panel="users">
         <div class="panel-header">
           <div>
             <p class="eyebrow">Kullanıcılar</p>
@@ -145,6 +145,19 @@
           </div>
           <div id="users-table-body" class="table-body"></div>
         </div>
+      </section>
+
+      <!-- Basit Ayarlar paneli (şimdilik placeholder) -->
+      <section class="panel" data-section-panel="settings" style="display:none;">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Ayarlar</p>
+            <h2>Genel Ayarlar</h2>
+          </div>
+        </div>
+        <p style="color:#aaa; margin-top:1rem;">
+          Buradan daha sonra site genel ayarlarını yönetebilirsiniz.
+        </p>
       </section>
     </main>
   </div>

@@ -14,12 +14,16 @@
             });
             
             navigator.sendBeacon('http://localhost:3000/logout', blob);
+
+            // Güvenlik için localStorage'daki oturum bilgisini daima sil
+            // Böylece kullanıcı başka siteye gidip geri gelse bile tekrar giriş yapmak zorunda kalır
+            localStorage.removeItem('userData');
         }
     });
 
     // Ayrıca sayfa görünürlüğü değişikliklerini işle (kullanıcı sekme/pencereyi değiştirir)
     document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
+        if (document.closed) {
             // Sayfa gizlendi, ancak çıkış yapılmadı
             // Sadece sayfa kapatıldığında çıkış yapılır
         }

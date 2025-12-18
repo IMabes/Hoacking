@@ -191,6 +191,34 @@ function attachActions() {
   if (refreshBlogs) refreshBlogs.addEventListener('click', loadAdminData);
   const refreshUsers = document.getElementById('refresh-users');
   if (refreshUsers) refreshUsers.addEventListener('click', loadAdminData);
+
+  // Admin panelindeki Çıkış butonu
+  const adminLogoutBtn = document.querySelector('.sidebar .logout');
+  if (adminLogoutBtn) {
+    adminLogoutBtn.addEventListener('click', async () => {
+      // localStorage'dan kullanıcı bilgisini al
+      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+      // Eğer kullanıcı giriş yaptıysa backend'e çıkış isteği gönder
+      if (userData.id) {
+        try {
+          await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: userData.id }),
+          });
+        } catch (err) {
+          console.error('Admin logout error:', err);
+        }
+      }
+
+      // Tarayıcı tarafındaki oturum bilgisini temizle
+      localStorage.removeItem('userData');
+
+      // Kullanıcıyı ana siteye yönlendir (index.html)
+      window.location.href = 'index.html';
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

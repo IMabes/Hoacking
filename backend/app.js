@@ -115,7 +115,8 @@ app.post('/login', (req, res) => {
     }
 
     // Kullanıcı adı veya e-posta adresine göre kullanıcı bulma
-    const sql = `SELECT ID, uname, usurname, unickname, umail, upasswd FROM users WHERE unickname = ? OR umail = ?`;
+    const sql = `SELECT ID, uname, usurname, unickname, umail, upasswd, urole FROM users WHERE unickname = ? OR umail = ?`;
+
     
     connection.query(sql, [username, username], (err, results) => {
         if (err) {
@@ -141,7 +142,7 @@ app.post('/login', (req, res) => {
                     // Güncelleme başarısız olsa bile hala başarılı olarak döndür
                 }
             });
-
+            //Giriş response 
             return res.json({
                 success: true,
                 message: "Giriş başarılı!",
@@ -150,12 +151,14 @@ app.post('/login', (req, res) => {
                     nickname: user.unickname,
                     email: user.umail,
                     name: user.uname,
-                    surname: user.usurname
+                    surname: user.usurname,
+                    role: user.urole
                 }
             });
         } else {
             return res.status(401).json({ message: "Kullanıcı adı veya şifre hatalı!" });
         }
+        
     });
 });
 
@@ -187,7 +190,7 @@ app.post('/logout', (req, res) => {
     });
 });
 
-// Admin summary endpoint - counts
+// Admin özet endpoint - counts
 app.get('/api/admin/summary', async (req, res) => {
     const queries = {
         totalUsers: 'SELECT COUNT(*) as cnt FROM users',
@@ -261,7 +264,7 @@ app.get('/api/courses', (req, res) => {
     });
 });
 
-// Course create
+// Kurs ekleme endpoint
 app.post('/api/courses', (req, res) => {
     const { title, description, image_url } = req.body;
     if (!title) return res.status(400).json({ success: false, message: "Başlık gerekli" });
@@ -275,7 +278,7 @@ app.post('/api/courses', (req, res) => {
     });
 });
 
-// Course delete
+// Kurs silme endpoint
 app.delete('/api/courses/:id', (req, res) => {
     const { id } = req.params;
     const sql = `DELETE FROM courses WHERE id = ?`;
@@ -290,7 +293,6 @@ app.delete('/api/courses/:id', (req, res) => {
 
 // Blogs endpoint - Tüm blog yazılarını getir
 app.get('/api/blogs', (req, res) => {
-    // Veritabanındaki sütun isimlerine göre: id, title, description, image_url, created_at
     const sql = `SELECT id, title, description, image_url, created_at FROM blogs ORDER BY created_at DESC`;
     
     connection.query(sql, (err, results) => {
@@ -306,7 +308,7 @@ app.get('/api/blogs', (req, res) => {
     });
 });
 
-// Blog create
+// Blog ekleme endpoint
 app.post('/api/blogs', (req, res) => {
     const { title, description, image_url } = req.body;
     if (!title) return res.status(400).json({ success: false, message: "Başlık gerekli" });
@@ -320,7 +322,7 @@ app.post('/api/blogs', (req, res) => {
     });
 });
 
-// Blog delete
+// Blog silme endpoint
 app.delete('/api/blogs/:id', (req, res) => {
     const { id } = req.params;
     const sql = `DELETE FROM blogs WHERE id = ?`;
@@ -333,7 +335,7 @@ app.delete('/api/blogs/:id', (req, res) => {
     });
 });
 
-// Users list
+// Kullanıcıları listeleme endpoint
 app.get('/api/users', (req, res) => {
     const sql = `SELECT ID as id, uname, usurname, unickname, umail, uis_active, ucreated_at FROM users ORDER BY ucreated_at DESC`;
     connection.query(sql, (err, results) => {
