@@ -216,9 +216,11 @@ function attachActions() {
       localStorage.removeItem('userData');
 
       // Kullanıcıyı ana siteye yönlendir (index.html)
-      window.location.href = 'index.html';
+      window.location.href = '../../index.html';
     });
   }
+
+  
 }
 
 document.addEventListener('DOMContentLoaded', () => {

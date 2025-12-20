@@ -1,6 +1,0 @@
-5.12.2025 - 8.12.2025 
-
-Sayfa görüntüsü tamamen güncellendi -> ÇOK BÜYÜK ORANDA VAKTİMİ ALDI
-profil kısmı eklendi ve gerekli işlemler yaptırıldı -> 2-3 Saat (node.js ilk defa kullandım)
-kullanıcılar ve testler kısmı için gerekli tablolar oluşturuldu (Forum ve blog eksik)
-Test kısmındaki testler şuan yalnızca görsel olarak varlar(Veri tabanından çekilecek testler, bloglar ve forumlar)

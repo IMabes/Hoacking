@@ -278,6 +278,33 @@ app.post('/api/courses', (req, res) => {
     });
 });
 
+//Kurs düzenleme endpoint
+app.put('/api/courses/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, description, image_url } = req.body;
+
+    // Başlık zorunlu ise kontrol ediyoruz
+    if (!title) {
+        return res.status(400).json({ success: false, message: "Başlık gereklidir." });
+    }
+
+    const sql = `UPDATE courses SET title = ?, description = ?, image_url = ? WHERE id = ?`;
+    
+    connection.query(sql, [title, description || null, image_url || null, id], (err, result) => {
+        if (err) {
+            console.error("DB Error (course update):", err);
+            return res.status(500).json({ success: false, message: "Kurs güncellenemedi." });
+        }
+
+        // Eğer etkilenen satır yoksa, bu ID ile bir kurs bulunamamış demektir
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Güncellenecek kurs bulunamadı." });
+        }
+
+        return res.json({ success: true, message: "Kurs başarıyla güncellendi." });
+    });
+});
+
 // Kurs silme endpoint
 app.delete('/api/courses/:id', (req, res) => {
     const { id } = req.params;

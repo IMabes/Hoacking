@@ -70,7 +70,7 @@ async function logout() {
     // index.html sayfasına yönlendir (şu anki sayfanın konumuna göre)
     const currentPath = window.location.pathname;
     const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-    window.location.href = basePath + '/index.html';
+    window.location.href = basePath + '../../index.html';
   }
 }
 

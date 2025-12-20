@@ -1,13 +1,19 @@
+/* Mevcut CSS'inizin en üstüne ekleyin */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Mevcut .site-footer sınıfınıza şunları eklediğinizden emin olun */
 .site-footer {
-  background: #0b031f;
+  background: #0b031f; /* Koyu mor/siyah tema */
   color: #fff;
   padding: 60px 80px 20px;
-  font-family: 'Arial', sans-serif;
   width: 100%;
-  margin: 0;
-  margin-top: auto;
   box-sizing: border-box;
-  flex-shrink: 0;
+  margin-top: auto; /* Footer'ı her zaman en alta iter */
 }
 
 .footer-inner {
