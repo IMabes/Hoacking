@@ -166,7 +166,17 @@
 .test-column-number {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
+  gap: 25px;
+  align-items: start;
+}
+
+/* Ensure course cards are square-shaped */
+.test-column-number .card-test {
+  aspect-ratio: 1 / 1;
+  min-height: 330px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Animations */

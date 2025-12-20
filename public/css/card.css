@@ -28,77 +28,112 @@
   display: flex;
 }
 
-/* Card Styling - Minimal Design with Shine Effect */
+/* Card Styling - Featured Card Style but Square */
 .card-test {
-  background: rgba(255, 255, 255, 0.034);
-  border: 1px solid rgba(255, 0, 153, 0.2);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  box-shadow: 
+    0 20px 30px rgba(0, 0, 0, 0.089),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
   transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
   position: relative;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  aspect-ratio: 1 / 1;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  height: 400px;
 }
 
 .card-test::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-  z-index: 1;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 80%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .card-test:hover {
-  border-color: rgba(255, 0, 153, 0.4);
-  box-shadow: 0 4px 20px rgba(255, 0, 153, 0.2);
-}
-
-.card-test:hover::before {
-  left: 100%;
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 136, 0.055);
+  box-shadow: 
+    0 25px 20px rgba(0, 255, 136, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .card-test-image {
   position: relative;
   overflow: hidden;
-  height: 180px;
-  background: rgba(255, 0, 153, 0.05);
+  width: 100%;
+  height: 40%;
+  background: rgba(0, 255, 136, 0.05);
+  border-radius: 15px;
+  margin-bottom: 15px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .card-test-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   filter: brightness(0.9);
+  border-radius: 15px;
+  display: block;
+}
+
+/* Icon style for cards without image */
+.card-test-icon {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.5));
+  animation: float 3s ease-in-out infinite;
 }
 
 .card-test-info {
-  padding: 18px;
-  background: rgba(0, 0, 0, 0.15);
+  padding: 0;
+  background: transparent;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.course-card-progress {
+  margin-top: auto;
+  margin-bottom: 12px;
+  width: 100%;
 }
 
 .card-test-info h1 {
   font-family: "Pixelify Sans", sans-serif;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  color: #00ff88;
-  text-shadow: 0 0 6px rgba(0, 255, 136, 0.3);
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 0.5px;
   line-height: 1.3;
 }
 
 .card-test-info p {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.85rem;
   line-height: 1.5;
   display: -webkit-box;
@@ -107,6 +142,75 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
+  margin-bottom: 12px;
+}
+
+.card-test-btn {
+  padding: 10px 25px;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+  color: #0a021a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Pixelify Sans", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 
+    0 8px 25px rgba(0, 255, 136, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  width: 100%;
+  margin-top: auto;
+}
+
+.card-test-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 15px 40px rgba(0, 255, 136, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Animations for course cards */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive adjustments for square cards */
+@media (max-width: 768px) {
+  .card-test {
+    padding: 20px;
+  }
+
+  .card-test-info h1 {
+    font-size: 1.2rem;
+  }
+
+  .card-test-info p {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .card-test-image {
+    min-height: 150px;
+  }
 }
   
 

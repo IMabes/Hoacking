@@ -20,6 +20,17 @@ body {
   color: var(--text);
 }
 
+/* Başlıklar için Pixelify Sans */
+h1, h2, h3, h4, h5, h6,
+.hero-title, .section-title, .training-title, .blog-title,
+.stat-number, .featured-card-title, .module-title,
+.panel-header h2, .topbar h1, .modal-header h2,
+.brand, .btn, button:not(input[type="button"]):not(input[type="submit"]) {
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+/* Form alanları ve okuma metinleri için sade font - inherit kullanıyorlar zaten */
+
 .layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -66,17 +77,42 @@ body {
   color: var(--text);
 }
 
-.logout {
+.sidebar-footer {
   margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.back-to-site,
+.logout {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: 0.2s;
+  font-size: 14px;
+  transition: 0.2s ease;
+  text-align: center;
 }
-.logout:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+.back-to-site:hover,
+.logout:hover { 
+  border-color: rgba(255,255,255,0.25); 
+  color: var(--text); 
+}
+
+.back-to-site {
+  background: rgba(0,255,136,0.08);
+  border-color: rgba(0,255,136,0.2);
+}
+
+.back-to-site:hover {
+  background: rgba(0,255,136,0.12);
+  border-color: rgba(0,255,136,0.3);
+}
 
 .content {
   padding: 28px 32px;
@@ -106,6 +142,29 @@ body {
 .actions {
   display: flex;
   gap: 10px;
+  align-items: center;
+}
+
+.back-to-site-header,
+.logout-header {
+  font-size: 13px;
+  padding: 8px 14px;
+}
+
+.back-to-site-header {
+  background: rgba(0,255,136,0.08);
+  border-color: rgba(0,255,136,0.2);
+  color: var(--accent);
+}
+
+.back-to-site-header:hover {
+  background: rgba(0,255,136,0.12);
+  border-color: rgba(0,255,136,0.3);
+}
+
+.logout-header:hover {
+  border-color: rgba(255,255,255,0.25);
+  color: var(--text);
 }
 
 button.primary,
@@ -132,6 +191,11 @@ button.small { padding: 6px 10px; font-size: 13px; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stats.panel {
+  display: grid !important; /* Stats panel'i her zaman göster */
 }
 
 .stat-card {
@@ -154,10 +218,64 @@ button.small { padding: 6px 10px; font-size: 13px; }
 .badge.neutral { color: var(--muted); }
 
 .panel {
+  display: none; /* Varsayılan olarak gizli, sadece aktif olan gösterilecek */
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 18px;
+}
+
+/* Panel içindeki tüm form elemanları için genel stiller */
+.panel input,
+.panel textarea,
+.panel select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  font-size: 14px;
+  font-family: inherit;
+  transition: 0.2s;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.panel input::placeholder,
+.panel textarea::placeholder {
+  color: var(--muted) !important;
+  opacity: 1;
+}
+
+.panel input:focus,
+.panel textarea:focus,
+.panel select:focus {
+  outline: none;
+  border-color: rgba(0,255,136,0.5);
+  background: rgba(0,255,136,0.03) !important;
+  box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
+}
+
+.panel select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff88' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-color: var(--surface-2) !important;
+  padding-right: 35px !important;
+  cursor: pointer;
+}
+
+.panel select option {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  padding: 10px 12px;
+}
+
+.panel select option:checked {
+  background: rgba(0, 255, 136, 0.2) !important;
+  color: var(--accent) !important;
 }
 .panel-header {
   display: flex;
@@ -165,7 +283,11 @@ button.small { padding: 6px 10px; font-size: 13px; }
   align-items: center;
   margin-bottom: 12px;
 }
-.panel-header h2 { margin: 2px 0; font-size: 18px; }
+.panel-header h2 { 
+  margin: 2px 0; 
+  font-size: 18px; 
+  font-family: "Pixelify Sans", sans-serif;
+}
 .panel-actions { display: flex; gap: 10px; }
 .inline-form {
   display: grid;
@@ -173,12 +295,45 @@ button.small { padding: 6px 10px; font-size: 13px; }
   gap: 10px;
   margin-bottom: 12px;
 }
-.inline-form input {
+.inline-form input,
+.inline-form select,
+.inline-form textarea {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text);
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  font-size: 14px;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.inline-form input::placeholder,
+.inline-form textarea::placeholder {
+  color: var(--muted) !important;
+  opacity: 1;
+}
+
+.inline-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff88' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-color: var(--surface-2) !important;
+  padding-right: 35px !important;
+  cursor: pointer;
+}
+
+.inline-form select option {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  padding: 10px 12px;
+}
+
+.inline-form select option:checked {
+  background: rgba(0, 255, 136, 0.2) !important;
+  color: var(--accent) !important;
 }
 .file-label {
   display: inline-flex;
@@ -203,7 +358,7 @@ button.small { padding: 6px 10px; font-size: 13px; }
 .table-head,
 .table-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
   padding: 12px 14px;
   gap: 8px;
   align-items: center;
@@ -219,6 +374,28 @@ button.small { padding: 6px 10px; font-size: 13px; }
 }
 .table-actions { display: flex; gap: 6px; justify-content: flex-end; }
 
+/* Kullanıcılar tablosu için özel grid yapısı (7 sütun) */
+#users-table-body .table-row {
+  grid-template-columns: 1.5fr 1fr 1.5fr 1fr 0.8fr 1fr 1.5fr;
+}
+
+.table[data-table="users"] .table-head {
+  grid-template-columns: 1.5fr 1fr 1.5fr 1fr 0.8fr 1fr 1.5fr;
+}
+
+.pill.featured {
+  background: rgba(0, 255, 136, 0.15);
+  color: var(--accent);
+  border-color: rgba(0, 255, 136, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+.star-yellow {
+  color: #ffd700;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+  display: inline-block;
+}
+
 .pill {
   padding: 6px 10px;
   border-radius: 999px;
@@ -229,15 +406,397 @@ button.small { padding: 6px 10px; font-size: 13px; }
   justify-self: start;
 }
 
+/* Öne çıkan buton stili */
+.featured-btn {
+  background: rgba(0, 255, 136, 0.15) !important;
+  border-color: rgba(0, 255, 136, 0.4) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.2) !important;
+}
+
+.featured-btn:hover {
+  background: rgba(0, 255, 136, 0.25) !important;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.4) !important;
+}
+
 @media (max-width: 1024px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { flex-direction: row; align-items: center; justify-content: space-between; }
   .menu { flex-direction: row; flex-wrap: wrap; }
 }
 
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 650px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+#module-management-content,
+#question-management-content,
+#edit-item-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  padding: 28px;
+  background: var(--surface);
+}
+
+/* Tüm modal içeriklerindeki form elemanları için genel stiller */
+#module-management-content input,
+#module-management-content textarea,
+#module-management-content select,
+#question-management-content input,
+#question-management-content textarea,
+#question-management-content select,
+#edit-item-content input,
+#edit-item-content textarea,
+#edit-item-content select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  font-size: 15px;
+  font-family: inherit;
+  transition: 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+#module-management-content input::placeholder,
+#module-management-content textarea::placeholder,
+#question-management-content input::placeholder,
+#question-management-content textarea::placeholder,
+#edit-item-content input::placeholder,
+#edit-item-content textarea::placeholder {
+  color: var(--muted) !important;
+  opacity: 1;
+}
+
+#module-management-content input:focus,
+#module-management-content textarea:focus,
+#module-management-content select:focus,
+#question-management-content input:focus,
+#question-management-content textarea:focus,
+#question-management-content select:focus,
+#edit-item-content input:focus,
+#edit-item-content textarea:focus,
+#edit-item-content select:focus {
+  outline: none;
+  border-color: rgba(0,255,136,0.5);
+  background: rgba(0,255,136,0.03) !important;
+  box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
+}
+
+#module-management-content select,
+#question-management-content select,
+#edit-item-content select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff88' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-color: var(--surface-2) !important;
+  padding-right: 40px !important;
+  cursor: pointer;
+}
+
+#module-management-content select option,
+#question-management-content select option,
+#edit-item-content select option {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  padding: 12px 16px;
+}
+
+#module-management-content select option:checked,
+#question-management-content select option:checked,
+#edit-item-content select option:checked {
+  background: rgba(0, 255, 136, 0.2) !important;
+  color: var(--accent) !important;
+}
+
+#module-management-content select option:hover,
+#question-management-content select option:hover,
+#edit-item-content select option:hover {
+  background: rgba(0, 255, 136, 0.1) !important;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(0,255,136,0.05), rgba(0,204,255,0.05));
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: "Pixelify Sans", sans-serif;
+  background: linear-gradient(135deg, #00ff88, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.modal-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: 0.2s;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  background: rgba(255, 0, 153, 0.1);
+  border-color: rgba(255, 0, 153, 0.3);
+  color: #ff7abf;
+  transform: rotate(90deg);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-form label {
+  display: block;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  font-size: 15px;
+  font-family: inherit;
+  transition: 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Select elementi için özel stiller */
+.modal-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff88' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-color: var(--surface-2) !important;
+  padding-right: 40px !important;
+  cursor: pointer;
+}
+
+.modal-form select option {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  padding: 12px 16px;
+}
+
+.modal-form select option:checked {
+  background: rgba(0, 255, 136, 0.2) !important;
+  color: var(--accent) !important;
+}
+
+.modal-form select option:hover {
+  background: rgba(0, 255, 136, 0.1) !important;
+}
+
+/* Input placeholder rengi */
+.modal-form input::placeholder,
+.modal-form textarea::placeholder {
+  color: var(--muted) !important;
+  opacity: 1;
+}
+
+.modal-form input:focus,
+.modal-form textarea:focus,
+.modal-form select:focus {
+  outline: none;
+  border-color: rgba(0,255,136,0.5);
+  background: rgba(0,255,136,0.03);
+  box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
+}
+
+.modal-form textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.modal-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.modal-form input[type="number"]::-webkit-outer-spin-button,
+.modal-form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-form input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #00ff88;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-actions button {
+  min-width: 100px;
+  padding: 12px 20px;
+  font-weight: 600;
+}
+
+/* Modül ve Soru Yönetimi Stilleri */
+.module-item,
+.question-item,
+.answer-item {
+  transition: 0.2s ease;
+}
+
+.module-item:hover,
+.question-item:hover,
+.answer-item:hover {
+  border-color: rgba(0,255,136,0.3) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,255,136,0.1);
+}
+
+#modules-list,
+#questions-list,
+#answers-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#modules-list::-webkit-scrollbar,
+#questions-list::-webkit-scrollbar,
+#answers-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+#modules-list::-webkit-scrollbar-track,
+#questions-list::-webkit-scrollbar-track,
+#answers-list::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+#modules-list::-webkit-scrollbar-thumb,
+#questions-list::-webkit-scrollbar-thumb,
+#answers-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+#modules-list::-webkit-scrollbar-thumb:hover,
+#questions-list::-webkit-scrollbar-thumb:hover,
+#answers-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,255,136,0.3);
+}
+
 @media (max-width: 720px) {
   .table-head,
-  .table-row { grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr 1fr; }
+  .table-row { grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr; }
   .actions, .panel-actions { flex-wrap: wrap; }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  .module-item,
+  .question-item,
+  .answer-item {
+    padding: 12px !important;
+  }
 }
 

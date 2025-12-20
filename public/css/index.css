@@ -323,8 +323,9 @@
 
 .title-accent {
   display: block;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 255, 136, 0.4);
   font-size: 0.6em;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
 }
 
 .section-title .gradient-text {

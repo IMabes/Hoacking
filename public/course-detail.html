@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurs Detayı</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/penetration-testing.css">
+</head>
+
+<body class="training-body">
+    <script src="js/includes.js"></script>
+    <script src="js/activity-tracker.js"></script>
+    <div id="navbar"></div>
+    <div id="blob"></div>
+
+    <div class="course-detail-container" id="courseDetailContainer">
+        <div class="course-detail-loading" id="courseDetailLoading">
+            <p>Kurs yükleniyor...</p>
+        </div>
+        <div class="course-detail-content" id="courseDetailContent" style="display: none;">
+            <button class="course-back-btn" onclick="window.location.href='cources.html'">← Geri Dön</button>
+            <div class="course-detail-header">
+                <h1 class="course-detail-title" id="courseDetailTitle"></h1>
+                <p class="course-detail-description" id="courseDetailDescription"></p>
+            </div>
+            <div class="course-detail-image" id="courseDetailImage"></div>
+            
+            <!-- Modüller Bölümü -->
+            <div class="modules-section">
+                <h2 class="section-title">Kurs Modülleri</h2>
+                <div class="modules-grid" id="modulesGrid">
+                    <!-- Modüller dinamik olarak buraya eklenecek -->
+                </div>
+            </div>
+        </div>
+        <div class="course-detail-error" id="courseDetailError" style="display: none;">
+            <p id="errorMessage">Kurs bulunamadı.</p>
+            <button class="course-back-btn" onclick="window.location.href='cources.html'">← Geri Dön</button>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <style>
+        .course-detail-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .course-detail-loading,
+        .course-detail-error {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .course-back-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            color: #00ff88;
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-family: "Pixelify Sans", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .course-back-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .course-detail-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .course-detail-title {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff0099 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .course-detail-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .course-detail-image {
+            margin-bottom: 50px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            max-height: 400px;
+        }
+
+        .course-detail-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .course-detail-title {
+                font-size: 2rem;
+            }
+
+            .course-detail-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+    <script>
+        // Get course ID from URL parameters
+        function getCourseIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Load course detail from API
+        async function loadCourseDetail() {
+            const courseId = getCourseIdFromUrl();
+            const loadingDiv = document.getElementById('courseDetailLoading');
+            const contentDiv = document.getElementById('courseDetailContent');
+            const errorDiv = document.getElementById('courseDetailError');
+
+            if (!courseId) {
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Kurs ID bulunamadı. URL parametresi eksik.';
+                return;
+            }
+
+            try {
+                // Load course info
+                // Get user ID from localStorage (optional - kurslar herkese açık olabilir)
+                let userData = null;
+                let userId = null;
+                try {
+                    const userDataStr = localStorage.getItem('userData');
+                    if (userDataStr) {
+                        userData = JSON.parse(userDataStr);
+                        userId = userData.id;
+                    }
+                } catch (e) {
+                    // localStorage'da userData yoksa veya parse edilemezse, kullanıcı giriş yapmamış demektir
+                    // Kurslar herkese açık olabilir, bu yüzden devam ediyoruz
+                }
+                
+                // Track course access if user is logged in
+                const courseUrl = userId 
+                    ? `http://localhost:3000/api/courses/${courseId}?userId=${userId}`
+                    : `http://localhost:3000/api/courses/${courseId}`;
+                
+                const courseResponse = await fetch(courseUrl);
+                
+                if (!courseResponse.ok) {
+                    console.error('Course response not OK:', courseResponse.status, courseResponse.statusText);
+                    const errorText = await courseResponse.text();
+                    console.error('Error response:', errorText);
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('errorMessage').textContent = `Kurs yüklenemedi (${courseResponse.status}). Lütfen backend sunucusunun çalıştığından emin olun.`;
+                    return;
+                }
+                
+                const courseData = await courseResponse.json();
+                console.log('Course data received:', courseData);
+
+                if (!courseData.success || !courseData.course) {
+                    console.error('Course data invalid:', courseData);
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('errorMessage').textContent = courseData.message || 'Kurs bulunamadı.';
+                    return;
+                }
+
+                const course = courseData.course;
+
+                // Update page title
+                document.title = course.title + ' - Hocking Kurs';
+
+                // Update content
+                document.getElementById('courseDetailTitle').textContent = course.title;
+                document.getElementById('courseDetailDescription').textContent = course.description || 'Açıklama bulunmuyor.';
+
+                // Update image
+                const imageDiv = document.getElementById('courseDetailImage');
+                if (course.image_url) {
+                    imageDiv.innerHTML = `<img src="${course.image_url}" alt="${course.title}">`;
+                } else {
+                    imageDiv.style.display = 'none';
+                }
+
+                // Load quizzes/tests for this course with user progress
+                try {
+                    // Get user ID from localStorage
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const userId = userData.id;
+                    
+                    // Add cache busting to ensure fresh data
+                    const cacheBuster = new Date().getTime();
+                    const quizzesUrl = userId 
+                        ? `http://localhost:3000/api/courses/${courseId}/quizzes?userId=${userId}&_t=${cacheBuster}`
+                        : `http://localhost:3000/api/courses/${courseId}/quizzes?_t=${cacheBuster}`;
+                    
+                    console.log('Fetching quizzes from:', quizzesUrl);
+                    const quizzesResponse = await fetch(quizzesUrl);
+                    const quizzesData = await quizzesResponse.json();
+
+                    console.log('Quizzes data received:', quizzesData);
+                    console.log('Quizzes array:', quizzesData.quizzes);
+                    
+                    if (quizzesData.success && quizzesData.quizzes) {
+                        // Log each quiz's progress data
+                        console.log('=== FRONTEND: Processing quizzes ===');
+                        quizzesData.quizzes.forEach((quiz, idx) => {
+                            console.log(`Quiz ${idx + 1} (ID: ${quiz.id}):`, {
+                                title: quiz.title,
+                                hasUserResult: !!quiz.user_result,
+                                userResult: quiz.user_result,
+                                progress: quiz.progress,
+                                progressType: typeof quiz.progress,
+                                fullQuizObject: JSON.stringify(quiz, null, 2)
+                            });
+                        });
+                        
+                        renderModules(quizzesData.quizzes || []);
+                    } else {
+                        console.error('Quizzes yüklenemedi:', quizzesData.message);
+                        renderModules([]);
+                    }
+                } catch (quizError) {
+                    console.error('Quiz yükleme hatası:', quizError);
+                    renderModules([]);
+                }
+
+                // Show content, hide loading
+                loadingDiv.style.display = 'none';
+                contentDiv.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading course detail:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                document.getElementById('errorMessage').textContent = `Hata: ${error.message}. Backend sunucusunun çalıştığından emin olun (http://localhost:3000).`;
+            }
+        }
+
+        // Render modules from quizzes
+        function renderModules(quizzes) {
+            const grid = document.getElementById('modulesGrid');
+            
+            if (!quizzes || quizzes.length === 0) {
+                grid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px; grid-column: 1 / -1;">Henüz modül eklenmemiş.</p>';
+                return;
+            }
+            
+            console.log('Rendering modules with data:', quizzes);
+            
+            grid.innerHTML = quizzes.map((quiz, index) => {
+                const questionCount = quiz.questions ? quiz.questions.length : 0;
+                const isCompleted = quiz.user_result ? true : false;
+                const progress = quiz.progress || 0;
+                const buttonText = isCompleted ? 'Tekrar Dene' : 'Başla';
+                const buttonClass = isCompleted ? 'start-btn completed' : 'start-btn';
+                
+                console.log(`Module ${index + 1} (Quiz ID: ${quiz.id}):`, {
+                    title: quiz.title,
+                    user_result: quiz.user_result,
+                    progress: progress,
+                    isCompleted: isCompleted,
+                    fullQuizData: quiz
+                });
+                
+                // Debug: Check if user_result exists
+                if (quiz.user_result) {
+                    console.log(`✓ Module ${index + 1} is completed with score: ${quiz.user_result.score}%`);
+                } else {
+                    console.log(`✗ Module ${index + 1} is NOT completed - user_result is null/undefined`);
+                }
+                
+                return `
+                    <div class="module-card" data-quiz-id="${quiz.id}">
+                        <div class="module-header">
+                            <div class="module-icon">📚</div>
+                            <div class="module-number">Modül ${index + 1}</div>
+                        </div>
+                        <div class="module-content">
+                            <h3 class="module-title">${quiz.title || 'Modül Başlığı'}</h3>
+                            <p class="module-description">${quiz.description || 'Açıklama bulunmuyor.'}</p>
+                            <div class="module-meta">
+                                ${quiz.time_limit > 0 ? `<span class="module-time">⏱️ ${quiz.time_limit} dakika</span>` : ''}
+                                ${questionCount > 0 ? `<span class="module-questions">❓ ${questionCount} soru</span>` : ''}
+                            </div>
+                            ${isCompleted ? `
+                                <div class="module-progress-info" style="margin-top: 10px; margin-bottom: 5px;">
+                                    <span class="module-score" style="color: #00ff88; font-size: 0.9rem;">Puan: ${quiz.user_result.score}%</span>
+                                </div>
+                            ` : ''}
+                            <div class="module-progress-bar-container" style="margin-top: 10px; margin-bottom: 15px;">
+                                <div class="module-progress-bar" style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden;">
+                                    <div class="module-progress-fill" style="width: ${progress}%; height: 100%; background: linear-gradient(90deg, #ff0099, #00ff88); border-radius: 3px; transition: width 0.5s ease;"></div>
+                                </div>
+                                <span class="module-progress-text" style="display: block; text-align: right; margin-top: 5px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.7);">${progress}%</span>
+                            </div>
+                            <button class="${buttonClass}" onclick="startQuiz(${quiz.id})">
+                                ${buttonText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Start quiz function
+        function startQuiz(quizId) {
+            window.location.href = `quiz.html?id=${quizId}`;
+        }
+
+        // Load course detail when page loads
+        document.addEventListener('DOMContentLoaded', loadCourseDetail);
+    </script>
+</body>
+
+</html>
+

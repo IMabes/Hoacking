@@ -117,7 +117,7 @@
 
 .modules-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
 }
 
@@ -208,6 +208,11 @@
 }
 
 .module-time {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.module-questions {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.5);
 }
@@ -328,7 +333,7 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     .modules-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 

@@ -114,10 +114,16 @@
 
         // localStorage'ı temizle
         localStorage.removeItem('userData');
+        localStorage.removeItem('lastSessionValidation');
         
         // Eğer mevcut sayfa index.html değilse, index.html sayfasına yönlendir
-        if (window.location.pathname !== '/index.html' && !window.location.pathname.includes('index.html')) {
-            window.location.href = 'index.html';
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/index.html' && !currentPath.includes('index.html')) {
+            if (currentPath.includes('/public/')) {
+                window.location.href = '../index.html';
+            } else {
+                window.location.href = 'index.html';
+            }
         }
     }
 

@@ -15,72 +15,330 @@
     <div class="register-container">
         <div class="register-form">
             <h1>Kayıt Ol</h1>
-            <form id="registerForm">
-                <input type="text" name="name" id="name" placeholder="Adınız" required>
-                <input type="text" name="surname" id="surname" placeholder="Soyadınız" required>
-                <input type="text" name="nickname" id="nickname" placeholder="Kullanıcı adınız" required>
-                <input type="email" name="email" id="email" placeholder="Email" required>
-                <input type="password" name="password" id="password" placeholder="Şifre" required>
-                <button type="submit">Kayıt Ol</button>
-                <div id="registerMessage" style="display: none;"></div>
-                <div class="auth-link">
-                    Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
-                </div>
-            </form>
+            
+            <!-- Adım 1: Kullanıcı Bilgileri -->
+            <div id="step1-registration" class="register-step">
+                <form id="registerForm">
+                    <input type="text" name="name" id="name" placeholder="Adınız" pattern="[A-Za-zÇĞİÖŞÜçğıöşü\s]+" title="Sadece harf ve boşluk kullanabilirsiniz" required>
+                    <input type="text" name="surname" id="surname" placeholder="Soyadınız" pattern="[A-Za-zÇĞİÖŞÜçğıöşü\s]+" title="Sadece harf ve boşluk kullanabilirsiniz" required>
+                    <input type="text" name="nickname" id="nickname" placeholder="Kullanıcı adınız" required>
+                    <input type="email" name="email" id="email" placeholder="E-posta adresiniz" required>
+                    <input type="password" name="password" id="password" placeholder="Şifre (en az 6 karakter)" required>
+                    <button type="submit" id="registerBtn">Kayıt Ol</button>
+                    <div id="registerMessage" style="display: none;"></div>
+                </form>
+            </div>
+            
+            <!-- Adım 2: E-posta Doğrulama -->
+            <div id="step2-code-verification" class="register-step" style="display: none;">
+                <p style="text-align: center; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; position: relative; z-index: 1;">
+                    <span id="verificationEmailDisplay"></span> adresine gönderilen doğrulama kodunu girin:
+                </p>
+                <form id="codeVerificationForm">
+                    <input type="text" name="code" id="verificationCode" placeholder="Doğrulama Kodu (6 haneli)" maxlength="6" pattern="[0-9]{6}" required>
+                    <button type="submit" id="verifyCodeBtn">Kodu Doğrula ve Hesabı Oluştur</button>
+                    <button type="button" id="resendCodeBtn" class="ghost-btn" style="margin-top: 10px;">Yeni Kod Gönder</button>
+                    <div id="codeMessage" style="display: none;"></div>
+                </form>
+            </div>
+            
+            <div class="auth-link" style="position: relative; z-index: 1;">
+                Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
+            </div>
         </div>
     </div>
     
     <script>
+        let registrationData = null; // Kullanıcı bilgilerini sakla
+
+        // Ad ve soyad alanlarına sadece harf girişi izin ver
+        document.getElementById('name').addEventListener('input', function(e) {
+            // Rakamları ve özel karakterleri kaldır (sadece harf ve boşluk bırak)
+            e.target.value = e.target.value.replace(/[^A-Za-zÇĞİÖŞÜçğıöşü\s]/g, '');
+        });
+
+        document.getElementById('surname').addEventListener('input', function(e) {
+            // Rakamları ve özel karakterleri kaldır (sadece harf ve boşluk bırak)
+            e.target.value = e.target.value.replace(/[^A-Za-zÇĞİÖŞÜçğıöşü\s]/g, '');
+        });
+
+        // Klavye ile rakam girişini engelle
+        document.getElementById('name').addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            if (!/[A-Za-zÇĞİÖŞÜçğıöşü\s]/.test(char)) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('surname').addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            if (!/[A-Za-zÇĞİÖŞÜçğıöşü\s]/.test(char)) {
+                e.preventDefault();
+            }
+        });
+
+        // Adım 1: Kayıt formu - Tüm bilgileri al ve e-posta doğrulama kodu gönder
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+            e.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const surname = document.getElementById('surname').value;
-    const nickname = document.getElementById('nickname').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const messageDiv = document.getElementById('registerMessage');
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
+            const nickname = document.getElementById('nickname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('registerMessage');
+            const registerBtn = document.getElementById('registerBtn');
 
-    try {
-        const response = await fetch('http://localhost:3000/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+            // Validasyonlar
+            // Ad ve soyad kontrolü (sadece harf ve boşluk)
+            const nameRegex = /^[A-Za-zÇĞİÖŞÜçğıöşü\s]+$/;
+            if (!nameRegex.test(name.trim()) || name.trim().length < 2) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Ad en az 2 karakter olmalı ve sadece harf içermelidir!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!nameRegex.test(surname.trim()) || surname.trim().length < 2) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Soyad en az 2 karakter olmalı ve sadece harf içermelidir!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Şifre en az 6 karakter olmalıdır!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            // E-posta format kontrolü
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Geçerli bir e-posta adresi giriniz!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            // Kullanıcı bilgilerini sakla
+            registrationData = {
                 uname: name,
                 usurname: surname,
                 unickname: nickname,
                 umail: email,
                 upasswd: password
-            })
+            };
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Doğrulama kodu gönderiliyor...';
+            messageDiv.style.display = 'none';
+
+            try {
+                // Önce e-posta ve kullanıcı adı kontrolü yap
+                const checkResponse = await fetch('http://localhost:3000/api/auth/check-availability', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, nickname: nickname })
+                });
+
+                const checkData = await checkResponse.json();
+                
+                if (!checkData.success) {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = checkData.message || 'E-posta veya kullanıcı adı zaten kullanılıyor!';
+                    messageDiv.style.display = 'block';
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = 'Kayıt Ol';
+                    return;
+                }
+
+                // Doğrulama kodu gönder
+                const response = await fetch('http://localhost:3000/api/auth/send-verification-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    let message = 'Doğrulama kodu e-posta adresinize gönderildi! Lütfen e-posta kutunuzu kontrol edin.';
+                    
+                    // Development modunda kod göster (production'da gösterilmez)
+                    if (data.devMode && data.code && window.location.hostname === 'localhost') {
+                        message = `Doğrulama kodunuz: ${data.code} (E-posta gönderilemedi)`;
+                    }
+                    
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = message;
+                    messageDiv.style.display = 'block';
+                    
+                    // Adım 2'ye geç
+                    document.getElementById('step1-registration').style.display = 'none';
+                    document.getElementById('step2-code-verification').style.display = 'block';
+                    document.getElementById('verificationEmailDisplay').textContent = email;
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message || 'Kod gönderilemedi!';
+                    messageDiv.style.display = 'block';
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = 'Kayıt Ol';
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Kayıt Ol';
+                console.error('Error:', error);
+            }
         });
-
-        const data = await response.json();
-
-        // Backend success = userId varsa
-        if (data.userId && data.user) {
-            // Kullanıcı verilerini localStorage'a kaydet
-            localStorage.setItem('userData', JSON.stringify(data.user));
+        
+        // Yeni kod gönderme
+        document.getElementById('resendCodeBtn').addEventListener('click', async function() {
+            if (!registrationData || !registrationData.umail) return;
             
-            messageDiv.style.color = 'green';
-            messageDiv.textContent = 'Kayıt başarılı! Yönlendiriliyorsunuz...';
-            messageDiv.style.display = 'block';
+            const messageDiv = document.getElementById('codeMessage');
+            const resendBtn = document.getElementById('resendCodeBtn');
+            
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Gönderiliyor...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/send-verification-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: registrationData.umail })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    let message = 'Yeni doğrulama kodu gönderildi!';
+                    
+                    // Development modunda kod göster (production'da gösterilmez)
+                    if (data.devMode && data.code && window.location.hostname === 'localhost') {
+                        message = `Yeni doğrulama kodunuz: ${data.code} (E-posta gönderilemedi)`;
+                    }
+                    
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = message;
+                    messageDiv.style.display = 'block';
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Yeni Kod Gönder';
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message || 'Kod gönderilemedi!';
+                    messageDiv.style.display = 'block';
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Yeni Kod Gönder';
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Yeni Kod Gönder';
+                console.error('Error:', error);
+            }
+        });
+        
+        // Adım 2: Doğrulama kodu kontrolü ve hesap oluşturma
+        document.getElementById('codeVerificationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!registrationData) {
+                alert('Bir hata oluştu. Lütfen sayfayı yenileyin.');
+                return;
+            }
+            
+            const code = document.getElementById('verificationCode').value;
+            const messageDiv = document.getElementById('codeMessage');
+            const verifyBtn = document.getElementById('verifyCodeBtn');
+            
+            if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Lütfen 6 haneli doğrulama kodunu giriniz!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Doğrulanıyor ve hesap oluşturuluyor...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                // Önce kodu doğrula
+                const verifyResponse = await fetch('http://localhost:3000/api/auth/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: registrationData.umail, code: code })
+                });
+                
+                const verifyData = await verifyResponse.json();
+                
+                if (!verifyData.success) {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = verifyData.message || 'Doğrulama kodu hatalı!';
+                    messageDiv.style.display = 'block';
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Kodu Doğrula ve Hesabı Oluştur';
+                    return;
+                }
+                
+                // Kod doğrulandı, şimdi hesabı oluştur
+                const registerResponse = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(registrationData)
+                });
 
-            setTimeout(() => {
-                window.location.href = '../../index.html';
-            }, 1000);
-        } else {
-            messageDiv.style.color = 'red';
-            messageDiv.textContent = data.message || 'Kayıt başarısız!';
-            messageDiv.style.display = 'block';
-        }
+                const registerData = await registerResponse.json();
 
-    } catch (error) {
-        messageDiv.style.color = 'red';
-        messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
-        messageDiv.style.display = 'block';
-        console.error('Error:', error);
-    }
-});
+                // Backend success = userId varsa
+                if (registerData.userId && registerData.user) {
+                    // Kullanıcı verilerini localStorage'a kaydet
+                    localStorage.setItem('userData', JSON.stringify(registerData.user));
+                    
+                    // Mark validation time (just registered, so session is valid)
+                    localStorage.setItem('lastSessionValidation', Date.now().toString());
+                    
+                    // Trigger custom event to update navbar
+                    window.dispatchEvent(new Event('userLogin'));
+                    
+                    // Update navbar immediately without validation
+                    if (window.updateNavbarAuth) {
+                        window.updateNavbarAuth(true); // skipValidation = true
+                    }
+                    
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = 'Kayıt başarılı! Yönlendiriliyorsunuz...';
+                    messageDiv.style.display = 'block';
+
+
+                    setTimeout(() => {
+                        window.location.href = '../../index.html';
+                    }, 1000);
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = registerData.message || 'Kayıt başarısız!';
+                    messageDiv.style.display = 'block';
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Kodu Doğrula ve Hesabı Oluştur';
+                }
+
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Kodu Doğrula ve Hesabı Oluştur';
+                console.error('Error:', error);
+            }
+        });
     </script>
 </body>
 </html>

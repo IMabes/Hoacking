@@ -21,14 +21,254 @@
                 <input type="password" name="password" id="password" placeholder="Şifre" required>
                 <button type="submit">Giriş Yap</button>
                 <div id="loginMessage" style="display: none;"></div>
+                <div class="auth-link" style="margin-top: 10px;">
+                    <a href="#" id="forgotPasswordLink" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">Şifrenizi mi unuttunuz?</a>
+                </div>
                 <div class="auth-link">
                     Hesabınız yok mu? <a href="register.html">Kayıt Ol</a>
                 </div>
             </form>
         </div>
       </div>
+      
+      <!-- Şifre Sıfırlama Modal -->
+      <div id="forgotPasswordModal" class="modal-backdrop" style="display: none;">
+          <div class="modal-content" style="max-width: 500px;">
+              <div class="modal-header">
+                  <h2>Şifre Sıfırlama</h2>
+                  <button class="modal-close" id="closeForgotPasswordModal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <!-- Adım 1: E-posta Girişi -->
+                  <div id="forgotPasswordStep1">
+                      <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
+                          Şifrenizi sıfırlamak için e-posta adresinizi girin. Size şifre sıfırlama kodu göndereceğiz.
+                      </p>
+                      <form id="forgotPasswordForm">
+                          <input type="email" name="email" id="forgotPasswordEmail" placeholder="E-posta adresiniz" required>
+                          <button type="submit" id="sendResetCodeBtn">Şifre Sıfırlama Kodu Gönder</button>
+                          <div id="forgotPasswordMessage" style="display: none;"></div>
+                      </form>
+                  </div>
+                  
+                  <!-- Adım 2: Kod Doğrulama ve Yeni Şifre -->
+                  <div id="forgotPasswordStep2" style="display: none;">
+                      <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
+                          <span id="resetEmailDisplay"></span> adresine gönderilen doğrulama kodunu girin ve yeni şifrenizi belirleyin:
+                      </p>
+                      <form id="resetPasswordForm">
+                          <input type="text" name="code" id="resetCode" placeholder="Doğrulama Kodu (6 haneli)" maxlength="6" pattern="[0-9]{6}" required>
+                          <input type="password" name="newPassword" id="newPassword" placeholder="Yeni Şifre (en az 6 karakter)" required>
+                          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Yeni Şifre Tekrar" required>
+                          <button type="submit" id="resetPasswordBtn">Şifreyi Sıfırla</button>
+                          <button type="button" id="resendResetCodeBtn" class="ghost-btn" style="margin-top: 10px;">Yeni Kod Gönder</button>
+                          <div id="resetPasswordMessage" style="display: none;"></div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
     
     <script>
+        let resetEmail = null;
+        
+        // Şifre sıfırlama modal açma
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+        });
+        
+        // Şifre sıfırlama modal kapatma
+        document.getElementById('closeForgotPasswordModal').addEventListener('click', function() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            // Formları sıfırla
+            document.getElementById('forgotPasswordForm').reset();
+            document.getElementById('resetPasswordForm').reset();
+            document.getElementById('forgotPasswordStep1').style.display = 'block';
+            document.getElementById('forgotPasswordStep2').style.display = 'none';
+            resetEmail = null;
+        });
+        
+        // Modal dışına tıklanınca kapat
+        document.getElementById('forgotPasswordModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                document.getElementById('closeForgotPasswordModal').click();
+            }
+        });
+        
+        // Adım 1: E-posta gönderme
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgotPasswordEmail').value;
+            const messageDiv = document.getElementById('forgotPasswordMessage');
+            const sendBtn = document.getElementById('sendResetCodeBtn');
+            
+            // E-posta format kontrolü
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Geçerli bir e-posta adresi giriniz!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Gönderiliyor...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resetEmail = email;
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message || 'Şifre sıfırlama kodu e-posta adresinize gönderildi!';
+                    messageDiv.style.display = 'block';
+                    
+                    // Adım 2'ye geç
+                    document.getElementById('forgotPasswordStep1').style.display = 'none';
+                    document.getElementById('forgotPasswordStep2').style.display = 'block';
+                    document.getElementById('resetEmailDisplay').textContent = email;
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message || 'Bir hata oluştu!';
+                    messageDiv.style.display = 'block';
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Şifre Sıfırlama Kodu Gönder';
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Şifre Sıfırlama Kodu Gönder';
+                console.error('Error:', error);
+            }
+        });
+        
+        // Yeni kod gönderme
+        document.getElementById('resendResetCodeBtn').addEventListener('click', async function() {
+            if (!resetEmail) return;
+            
+            const messageDiv = document.getElementById('resetPasswordMessage');
+            const resendBtn = document.getElementById('resendResetCodeBtn');
+            
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Gönderiliyor...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: resetEmail })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = 'Yeni şifre sıfırlama kodu gönderildi!';
+                    messageDiv.style.display = 'block';
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message || 'Kod gönderilemedi!';
+                    messageDiv.style.display = 'block';
+                }
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Yeni Kod Gönder';
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Yeni Kod Gönder';
+                console.error('Error:', error);
+            }
+        });
+        
+        // Adım 2: Şifre sıfırlama
+        document.getElementById('resetPasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const code = document.getElementById('resetCode').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const messageDiv = document.getElementById('resetPasswordMessage');
+            const resetBtn = document.getElementById('resetPasswordBtn');
+            
+            // Validasyonlar
+            if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Lütfen 6 haneli doğrulama kodunu giriniz!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Şifre en az 6 karakter olmalıdır!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Şifreler eşleşmiyor!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Şifre sıfırlanıyor...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: resetEmail,
+                        code: code,
+                        newPassword: newPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = 'Şifreniz başarıyla sıfırlandı! Giriş sayfasına yönlendiriliyorsunuz...';
+                    messageDiv.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        document.getElementById('closeForgotPasswordModal').click();
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message || 'Şifre sıfırlama başarısız!';
+                    messageDiv.style.display = 'block';
+                    resetBtn.disabled = false;
+                    resetBtn.textContent = 'Şifreyi Sıfırla';
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                messageDiv.style.display = 'block';
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'Şifreyi Sıfırla';
+                console.error('Error:', error);
+            }
+        });
+        
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -52,12 +292,16 @@
                     // Save user data to localStorage
                     localStorage.setItem('userData', JSON.stringify(data.user));
                     
+                    // Mark validation time (just logged in, so session is valid)
+                    localStorage.setItem('lastSessionValidation', Date.now().toString());
+                    
                     // Trigger custom event to update navbar
                     window.dispatchEvent(new Event('userLogin'));
                     
-                    // Also update navbar if function is available
+                    // Update navbar immediately without validation (skipValidation = true)
+                    // because we just logged in successfully
                     if (window.updateNavbarAuth) {
-                        window.updateNavbarAuth();
+                        window.updateNavbarAuth(true); // skipValidation = true
                     }
                     
                     messageDiv.style.color = 'green';

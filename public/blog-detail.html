@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Detayı</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+
+<body class="blog-body">
+    <script src="js/includes.js"></script>
+    <script src="js/activity-tracker.js"></script>
+    <div id="navbar"></div>
+
+    <div class="blog-detail-container" id="blogDetailContainer">
+        <div class="blog-detail-loading" id="blogDetailLoading">
+            <p>Blog yazısı yükleniyor...</p>
+        </div>
+        <div class="blog-detail-content" id="blogDetailContent" style="display: none;">
+            <button class="blog-back-btn" onclick="window.location.href='blog.html'">← Geri Dön</button>
+            <div class="blog-detail-header">
+                <h1 class="blog-detail-title" id="blogDetailTitle"></h1>
+                <p class="blog-detail-date" id="blogDetailDate"></p>
+            </div>
+            <div class="blog-detail-image" id="blogDetailImage"></div>
+            <div class="blog-detail-body">
+                <p class="blog-detail-description" id="blogDetailDescription"></p>
+            </div>
+        </div>
+        <div class="blog-detail-error" id="blogDetailError" style="display: none;">
+            <p>Blog yazısı bulunamadı.</p>
+            <button class="blog-back-btn" onclick="window.location.href='blog.html'">← Geri Dön</button>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <style>
+        .blog-detail-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .blog-detail-loading,
+        .blog-detail-error {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .blog-back-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            color: #00ff88;
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-family: "Pixelify Sans", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .blog-back-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .blog-detail-header {
+            margin-bottom: 30px;
+        }
+
+        .blog-detail-title {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff0099 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .blog-detail-date {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .blog-detail-image {
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .blog-detail-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+        .blog-detail-body {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .blog-detail-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .blog-detail-title {
+                font-size: 1.8rem;
+            }
+
+            .blog-detail-body {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <script>
+        // Get blog ID from URL parameters
+        function getBlogIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Load blog detail from API
+        async function loadBlogDetail() {
+            const blogId = getBlogIdFromUrl();
+            const loadingDiv = document.getElementById('blogDetailLoading');
+            const contentDiv = document.getElementById('blogDetailContent');
+            const errorDiv = document.getElementById('blogDetailError');
+
+            if (!blogId) {
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/blogs/${blogId}`);
+                const data = await response.json();
+
+                if (data.success && data.blog) {
+                    const blog = data.blog;
+
+                    // Update page title
+                    document.title = blog.title + ' - Hocking Blog';
+
+                    // Update content
+                    document.getElementById('blogDetailTitle').textContent = blog.title;
+                    
+                    // Format date
+                    if (blog.created_at) {
+                        const date = new Date(blog.created_at);
+                        const formattedDate = date.toLocaleDateString('tr-TR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        document.getElementById('blogDetailDate').textContent = formattedDate;
+                    }
+
+                    // Update image
+                    const imageDiv = document.getElementById('blogDetailImage');
+                    if (blog.image_url) {
+                        imageDiv.innerHTML = `<img src="${blog.image_url}" alt="${blog.title}">`;
+                    } else {
+                        imageDiv.style.display = 'none';
+                    }
+
+                    // Update description
+                    document.getElementById('blogDetailDescription').textContent = blog.description || 'Açıklama bulunmuyor.';
+
+                    // Show content, hide loading
+                    loadingDiv.style.display = 'none';
+                    contentDiv.style.display = 'block';
+                } else {
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading blog detail:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        // Load blog detail when page loads
+        document.addEventListener('DOMContentLoaded', loadBlogDetail);
+    </script>
+</body>
+
+</html>
+

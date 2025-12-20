@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/page.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/penetration-testing.css">
+</head>
+
+<body class="training-body">
+    <script src="js/includes.js"></script>
+    <script src="js/activity-tracker.js"></script>
+    <div id="navbar"></div>
+    <div id="blob"></div>
+
+    <div class="quiz-container" id="quizContainer">
+        <div class="quiz-loading" id="quizLoading">
+            <p>Quiz yükleniyor...</p>
+        </div>
+        
+        <div class="quiz-content" id="quizContent" style="display: none;">
+            <div class="quiz-header">
+                <button class="quiz-back-btn" onclick="confirmExit()">← Geri Dön</button>
+                <div class="quiz-title-section">
+                    <h1 class="quiz-title" id="quizTitle"></h1>
+                    <p class="quiz-description" id="quizDescription"></p>
+                </div>
+                <div class="quiz-timer" id="quizTimer">
+                    <span class="timer-icon">⏱️</span>
+                    <span class="timer-text" id="timerText">--:--</span>
+                </div>
+            </div>
+
+            <div class="quiz-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-text" id="progressText">Soru 0 / 0</span>
+            </div>
+
+            <div class="quiz-questions" id="quizQuestions">
+                <!-- Sorular buraya dinamik olarak eklenecek -->
+            </div>
+
+            <div class="quiz-actions">
+                <button class="quiz-btn quiz-btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">← Önceki</button>
+                <button class="quiz-btn quiz-btn-primary" id="nextBtn" onclick="nextQuestion()">Sonraki →</button>
+                <button class="quiz-btn quiz-btn-success" id="submitBtn" onclick="submitQuiz()" style="display: none;">Sınavı Bitir</button>
+            </div>
+        </div>
+
+        <div class="quiz-result" id="quizResult" style="display: none;">
+            <div class="result-content">
+                <h2 class="result-title">Sınav Tamamlandı!</h2>
+                <div class="result-score">
+                    <div class="score-circle">
+                        <span class="score-number" id="scoreNumber">0</span>
+                        <span class="score-percent">%</span>
+                    </div>
+                    <p class="score-text" id="scoreText">0 / 0 doğru</p>
+                </div>
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Doğru Cevap:</span>
+                        <span class="detail-value" id="correctCount">0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Yanlış Cevap:</span>
+                        <span class="detail-value" id="wrongCount">0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Toplam Soru:</span>
+                        <span class="detail-value" id="totalCount">0</span>
+                    </div>
+                </div>
+                <div class="result-actions">
+                    <button class="quiz-btn quiz-btn-primary" id="backToModulesBtn" onclick="backToModules()">Modüllere Dön</button>
+                    <button class="quiz-btn quiz-btn-secondary" onclick="restartQuiz()">Tekrar Dene</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-error" id="quizError" style="display: none;">
+            <p id="errorMessage">Quiz yüklenemedi.</p>
+            <button class="quiz-btn quiz-btn-primary" onclick="backToModules()">Modüllere Dön</button>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <style>
+        .quiz-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .quiz-loading,
+        .quiz-error {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .quiz-back-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            color: #00ff88;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-family: "Pixelify Sans", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-back-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .quiz-header {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quiz-title-section {
+            margin-bottom: 15px;
+        }
+
+        .quiz-title {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 10px 0;
+        }
+
+        .quiz-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .quiz-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 0, 153, 0.1);
+            border: 1px solid rgba(255, 0, 153, 0.3);
+            border-radius: 25px;
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 1.2rem;
+            color: #ff0099;
+        }
+
+        .quiz-timer.warning {
+            background: rgba(255, 100, 0, 0.1);
+            border-color: rgba(255, 100, 0, 0.3);
+            color: #ff6400;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .quiz-progress {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88 0%, #00ccff 100%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            display: block;
+        }
+
+        .quiz-questions {
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        .question-number {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 0.9rem;
+            color: #00ff88;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .question-type {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255, 0, 153, 0.1);
+            border: 1px solid rgba(255, 0, 153, 0.3);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #ff0099;
+            margin-bottom: 20px;
+        }
+
+        .answers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .answer-item {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .answer-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .answer-item.selected {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: #00ff88;
+        }
+
+        .answer-item input[type="radio"],
+        .answer-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #00ff88;
+        }
+
+        .answer-text {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .quiz-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quiz-btn-primary {
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            color: #0a021a;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .quiz-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .quiz-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quiz-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .quiz-btn-success {
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            color: #0a021a;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .result-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 50px 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-title {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+        }
+
+        .result-score {
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .score-number {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 3rem;
+            color: #0a021a;
+            font-weight: bold;
+        }
+
+        .score-percent {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 1.5rem;
+            color: #0a021a;
+        }
+
+        .score-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .detail-value {
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 1.5rem;
+            color: #00ff88;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-title {
+                font-size: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+
+            .quiz-actions {
+                flex-direction: column;
+            }
+
+            .quiz-btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        let quizData = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let timeRemaining = 0;
+        let timerInterval = null;
+        
+        // Initialize userAnswers as empty object
+        userAnswers = {};
+
+        // Get quiz ID from URL
+        function getQuizIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Load quiz data
+        async function loadQuiz() {
+            const quizId = getQuizIdFromUrl();
+            const loadingDiv = document.getElementById('quizLoading');
+            const contentDiv = document.getElementById('quizContent');
+            const errorDiv = document.getElementById('quizError');
+
+            if (!quizId) {
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Quiz ID bulunamadı.';
+                return;
+            }
+
+            try {
+                console.log('Fetching quiz with ID:', quizId);
+                const response = await fetch(`http://localhost:3000/api/quizzes/${quizId}`);
+                
+                console.log('Response status:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('Quiz data received:', data);
+
+                if (!data.success || !data.quiz) {
+                    throw new Error(data.message || 'Quiz bulunamadı');
+                }
+
+                quizData = data.quiz;
+                
+                // Track quiz access if user is logged in (optional)
+                let userData = null;
+                try {
+                    const userDataStr = localStorage.getItem('userData');
+                    if (userDataStr) {
+                        userData = JSON.parse(userDataStr);
+                        if (userData.id) {
+                            fetch(`http://localhost:3000/api/quizzes/${quizId}/track-access`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ userId: userData.id })
+                            }).catch(error => {
+                                // Hata durumunda sessizce devam et
+                            });
+                        }
+                    }
+                } catch (e) {
+                    // Kullanıcı giriş yapmamış, devam et
+                }
+                
+                // Initialize timer
+                if (quizData.time_limit > 0) {
+                    timeRemaining = quizData.time_limit * 60; // Convert to seconds
+                    startTimer();
+                }
+
+                // Update UI
+                document.title = quizData.title + ' - Quiz';
+                document.getElementById('quizTitle').textContent = quizData.title;
+                document.getElementById('quizDescription').textContent = quizData.description || '';
+                
+                // Render questions first
+                renderQuestions();
+                
+                // Initialize question display
+                currentQuestionIndex = 0;
+                showQuestion(0);
+                updateProgress();
+
+                // Show content
+                loadingDiv.style.display = 'none';
+                contentDiv.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading quiz:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                document.getElementById('errorMessage').textContent = `Quiz yüklenemedi: ${error.message}`;
+            }
+        }
+
+        // Render questions
+        function renderQuestions() {
+            const container = document.getElementById('quizQuestions');
+            
+            if (!quizData.questions || quizData.questions.length === 0) {
+                container.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7); text-align: center; padding: 40px;">Bu quiz için soru bulunamadı.</p>';
+                return;
+            }
+
+            container.innerHTML = quizData.questions.map((question, index) => {
+                const questionType = question.type === 'true_false' ? 'Doğru/Yanlış' : 
+                                   question.type === 'multiple_choice' ? 'Çoklu Seçim' : 'Tek Seçim';
+                
+                return `
+                    <div class="question-card" data-question-index="${index}">
+                        <div class="question-number">Soru ${index + 1}</div>
+                        <span class="question-type">${questionType}</span>
+                        <h3 class="question-text">${question.question_text}</h3>
+                        <div class="answers-list">
+                            ${question.answers.map((answer, answerIndex) => {
+                                const inputType = question.type === 'multiple_choice' ? 'checkbox' : 'radio';
+                                const inputName = `question_${question.id}`;
+                                const inputId = `answer_${question.id}_${answer.id}`;
+                                
+                                return `
+                                    <label class="answer-item" for="${inputId}">
+                                        <input 
+                                            type="${inputType}" 
+                                            name="${inputName}" 
+                                            id="${inputId}"
+                                            value="${answer.id}"
+                                            onchange="handleAnswerChange(${question.id}, ${answer.id}, ${question.type === 'multiple_choice' ? 'true' : 'false'})"
+                                        >
+                                        <span class="answer-text">${answer.answer_text}</span>
+                                    </label>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Handle answer change
+        function handleAnswerChange(questionId, answerId, isMultiple) {
+            if (isMultiple) {
+                if (!userAnswers[questionId]) {
+                    userAnswers[questionId] = [];
+                }
+                const checkbox = document.getElementById(`answer_${questionId}_${answerId}`);
+                if (checkbox.checked) {
+                    if (!userAnswers[questionId].includes(answerId)) {
+                        userAnswers[questionId].push(answerId);
+                    }
+                } else {
+                    userAnswers[questionId] = userAnswers[questionId].filter(id => id !== answerId);
+                }
+            } else {
+                userAnswers[questionId] = answerId;
+                // Update visual selection for radio buttons
+                const questionCard = document.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+                if (questionCard) {
+                    questionCard.querySelectorAll('.answer-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    const selectedItem = document.getElementById(`answer_${questionId}_${answerId}`).closest('.answer-item');
+                    if (selectedItem) {
+                        selectedItem.classList.add('selected');
+                    }
+                }
+            }
+            
+            // Update unanswered count
+            updateUnansweredCount();
+        }
+
+        // Show question
+        function showQuestion(index) {
+            const questions = document.querySelectorAll('.question-card');
+            questions.forEach((q, i) => {
+                q.classList.toggle('active', i === index);
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.display = index > 0 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = index < questions.length - 1 ? 'block' : 'none';
+            document.getElementById('submitBtn').style.display = index === questions.length - 1 ? 'block' : 'none';
+        }
+
+        // Previous question
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // Next question
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / quizData.questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            updateUnansweredCount();
+        }
+        
+        // Update unanswered questions count
+        function updateUnansweredCount() {
+            try {
+                if (!quizData || !quizData.questions) return;
+                
+                const progressTextEl = document.getElementById('progressText');
+                if (!progressTextEl) return;
+                
+                const totalQuestions = quizData.questions.length;
+                const answeredCount = Object.keys(userAnswers).length;
+                const unansweredCount = totalQuestions - answeredCount;
+                
+                progressTextEl.textContent = `Soru ${currentQuestionIndex + 1} / ${totalQuestions}${unansweredCount > 0 ? ` (${unansweredCount} boş)` : ''}`;
+            } catch (error) {
+                console.error('Error in updateUnansweredCount:', error);
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz(true);
+                } else if (timeRemaining <= 60) {
+                    document.getElementById('quizTimer').classList.add('warning');
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerText').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Submit quiz
+        function submitQuiz(isTimeUp = false) {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            // Calculate results
+            let correctCount = 0;
+            let wrongCount = 0;
+            const totalQuestions = quizData.questions.length;
+
+            quizData.questions.forEach(question => {
+                const userAnswer = userAnswers[question.id];
+                const correctAnswers = question.answers.filter(a => a.is_correct).map(a => a.id);
+                
+                let isCorrect = false;
+                
+                if (question.type === 'multiple_choice') {
+                    if (Array.isArray(userAnswer) && userAnswer.length === correctAnswers.length) {
+                        isCorrect = userAnswer.every(id => correctAnswers.includes(id)) &&
+                                   correctAnswers.every(id => userAnswer.includes(id));
+                    }
+                } else {
+                    isCorrect = userAnswer && correctAnswers.includes(parseInt(userAnswer));
+                }
+
+                if (isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            });
+
+            const score = Math.round((correctCount / totalQuestions) * 100);
+
+            // Prepare answers for database
+            const userAnswersArray = [];
+            quizData.questions.forEach(question => {
+                const userAnswer = userAnswers[question.id];
+                const correctAnswers = question.answers.filter(a => a.is_correct).map(a => a.id);
+                
+                let isCorrect = false;
+                let answerIds = [];
+                
+                if (question.type === 'multiple_choice') {
+                    if (Array.isArray(userAnswer) && userAnswer.length === correctAnswers.length) {
+                        isCorrect = userAnswer.every(id => correctAnswers.includes(parseInt(id))) &&
+                                   correctAnswers.every(id => userAnswer.includes(parseInt(id)));
+                        answerIds = userAnswer.map(id => parseInt(id));
+                    }
+                } else {
+                    const answerId = userAnswer ? parseInt(userAnswer) : null;
+                    isCorrect = answerId && correctAnswers.includes(answerId);
+                    if (answerId) answerIds = [answerId];
+                }
+
+                // Save answer for database
+                answerIds.forEach(answerId => {
+                    userAnswersArray.push({
+                        questionId: question.id,
+                        answerId: answerId,
+                        isCorrect: isCorrect
+                    });
+                });
+            });
+
+            // Save result to database (if user is logged in)
+            let userData = null;
+            try {
+                const userDataStr = localStorage.getItem('userData');
+                if (userDataStr) {
+                    userData = JSON.parse(userDataStr);
+                    if (userData.id && quizData.id) {
+                        fetch(`http://localhost:3000/api/quizzes/${quizData.id}/results`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userId: userData.id,
+                                score: score,
+                                correctCount: correctCount,
+                                incorrectCount: wrongCount,
+                                answers: userAnswersArray
+                            })
+                        }).catch(error => {
+                            // Hata durumunda sessizce devam et
+                        });
+                    }
+                }
+            } catch (e) {
+                // Kullanıcı giriş yapmamış, sonuçlar kaydedilmeyecek ama quiz tamamlanabilir
+            }
+
+            // Show results
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'block';
+            
+            document.getElementById('scoreNumber').textContent = score;
+            document.getElementById('scoreText').textContent = `${correctCount} / ${totalQuestions} doğru`;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('wrongCount').textContent = wrongCount;
+            document.getElementById('totalCount').textContent = totalQuestions;
+        }
+
+        // Restart quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            if (quizData.time_limit > 0) {
+                timeRemaining = quizData.time_limit * 60;
+                startTimer();
+            }
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'block';
+            showQuestion(0);
+            updateProgress();
+            renderQuestions();
+            showQuestion(0);
+        }
+
+        // Back to modules (course detail page)
+        function backToModules() {
+            if (quizData && quizData.course_id) {
+                window.location.href = `course-detail.html?id=${quizData.course_id}`;
+            } else {
+                // Fallback to courses page if course_id is not available
+                window.location.href = 'cources.html';
+            }
+        }
+
+        // Confirm exit
+        function confirmExit() {
+            if (confirm('Sınavdan çıkmak istediğinize emin misiniz? İlerlemeniz kaydedilmeyecek.')) {
+                if (quizData && quizData.course_id) {
+                    window.location.href = `course-detail.html?id=${quizData.course_id}`;
+                } else {
+                    window.location.href = 'cources.html';
+                }
+            }
+        }
+
+        // Load quiz when page loads
+        document.addEventListener('DOMContentLoaded', loadQuiz);
+    </script>
+</body>
+
+</html>
+

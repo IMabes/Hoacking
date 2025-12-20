@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile - Hoacking</title>
+    <title>Kullanıcı Profili - Hoacking</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/page.css">
     <link rel="stylesheet" href="css/profile.css">
@@ -35,87 +35,95 @@
             </div>
             <div class="profile-info">
                 <h1 class="profile-username" id="profileUsername">Hacker_User</h1>
-                <p class="profile-bio" id="profileBio" contenteditable="false">Cybersecurity enthusiast | Penetration Tester | Bug Hunter</p>
-                <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+                <p class="profile-bio" id="profileBio" contenteditable="false">Siber güvenlik tutkunu | Penetrasyon Test Uzmanı | Bug Hunter</p>
+                <button class="edit-profile-btn" id="editProfileBtn">Profili Düzenle</button>
             </div>
         </div>
 
         <!-- Genel İlerleme Paneli Bölümü -->
         <div class="progress-panel">
-            <h2 class="section-title">Overall Progress</h2>
+            <h2 class="section-title">Genel İlerleme</h2>
             <div class="progress-stats">
                 <div class="stat-card">
-                    <div class="stat-value" id="totalProgress">68%</div>
-                    <div class="stat-label">Total Completion</div>
+                    <div class="stat-value" id="totalProgress">0%</div>
+                    <div class="stat-label">Toplam Tamamlanma</div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="totalProgressBar">
-                            <div class="progress-fill" style="width: 68%"></div>
+                            <div class="progress-fill" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="coursesCompleted">5</div>
-                    <div class="stat-label">Courses Completed</div>
+                    <div class="stat-value" id="coursesCompleted">0</div>
+                    <div class="stat-label">Tamamlanan Kurslar</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="coursesInProgress">3</div>
-                    <div class="stat-label">In Progress</div>
+                    <div class="stat-value" id="coursesInProgress">0</div>
+                    <div class="stat-label">Devam Eden Kurslar</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="totalHours">127</div>
-                    <div class="stat-label">Hours Learned</div>
+                    <div class="stat-value" id="totalHours">0</div>
+                    <div class="stat-label">Öğrenilen Saat</div>
                 </div>
             </div>
         </div>
 
-        <!-- Dersleri Bölümü -->
+        <!-- Tamamlanan Kurslar Bölümü -->
         <div class="courses-section">
-            <h2 class="section-title">My Courses</h2>
-            <div class="courses-grid" id="coursesGrid">
-                <!-- Course cards will be dynamically generated -->
+            <h2 class="section-title">Tamamlanan Kurslar</h2>
+            <div class="courses-grid" id="completedCoursesGrid">
+                <!-- Completed course cards will be dynamically generated -->
             </div>
         </div>
 
-        <!-- Ödülleri(bagde) Bölümü -->
+        <!-- Devam Eden Kurslar Bölümü -->
+        <div class="courses-section">
+            <h2 class="section-title">Devam Eden Kurslar</h2>
+            <div class="courses-grid" id="inProgressCoursesGrid">
+                <!-- In-progress course cards will be dynamically generated -->
+            </div>
+        </div>
+
+        <!-- Ödüller Bölümü -->
         <div class="badges-section">
-            <h2 class="section-title">Earned Badges</h2>
+            <h2 class="section-title">Kazanılan Rozetler</h2>
             <div class="badges-grid" id="badgesGrid">
-                <!-- Ödülleri(bagde) dinamik olarak oluşturulacak -->
+                <!-- Rozetler dinamik olarak oluşturulacak -->
             </div>
         </div>
 
         <!-- Son Aktivite Zaman Çizelgesi Bölümü -->
         <div class="activity-section">
-            <h2 class="section-title">Recent Activity</h2>
+            <h2 class="section-title">Son Aktiviteler</h2>
             <div class="activity-timeline" id="activityTimeline">
-                <!-- Activity items will be dynamically generated -->
+                <!-- Aktivite öğeleri dinamik olarak oluşturulacak -->
             </div>
         </div>
 
         <!-- Güvenlik Ayarları Bölümü -->
         <div class="security-section">
-            <h2 class="section-title">Security Settings</h2>
+            <h2 class="section-title">Güvenlik Ayarları</h2>
             <div class="security-options">
                 <div class="security-item">
                     <div class="security-info">
-                        <h3>Two-Factor Authentication</h3>
-                        <p>Add an extra layer of security to your account</p>
+                        <h3>İki Faktörlü Kimlik Doğrulama</h3>
+                        <p>Hesabınıza ekstra bir güvenlik katmanı ekleyin</p>
                     </div>
-                    <button class="security-btn">Enable 2FA</button>
+                    <button class="security-btn">2FA'yı Etkinleştir</button>
                 </div>
                 <div class="security-item">
                     <div class="security-info">
-                        <h3>Change Password</h3>
-                        <p>Update your account password</p>
+                        <h3>Şifre Değiştir</h3>
+                        <p>Hesap şifrenizi güncelleyin</p>
                     </div>
-                    <button class="security-btn">Change Password</button>
+                    <button class="security-btn">Şifre Değiştir</button>
                 </div>
                 <div class="security-item">
                     <div class="security-info">
-                        <h3>Account Settings</h3>
-                        <p>Manage your account preferences</p>
+                        <h3>Hesap Ayarları</h3>
+                        <p>Hesap tercihlerinizi yönetin</p>
                     </div>
-                    <button class="security-btn">Settings</button>
+                    <button class="security-btn">Ayarlar</button>
                 </div>
             </div>
         </div>
@@ -124,59 +132,6 @@
     <div id="footer-container"></div>
 
     <script>
-        // Örnek veriler - Gerçek API çağrıları ile değiştirilecek
-        const sampleCourses = [
-            {
-                id: 1,
-                title: "Ethical Hacking Fundamentals",
-                category: "Penetration Testing",
-                progress: 85,
-                thumbnail: "🔓"
-            },
-            {
-                id: 2,
-                title: "Network Security Essentials",
-                category: "Network Security",
-                progress: 60,
-                thumbnail: "🌐"
-            },
-            {
-                id: 3,
-                title: "Web Application Security",
-                category: "Web Security",
-                progress: 45,
-                thumbnail: "🕷️"
-            },
-            {
-                id: 4,
-                title: "Cryptography Basics",
-                category: "Cryptography",
-                progress: 30,
-                thumbnail: "🔐"
-            },
-            {
-                id: 5,
-                title: "Malware Analysis",
-                category: "Reverse Engineering",
-                progress: 20,
-                thumbnail: "🦠"
-            }
-        ];
-
-        const sampleBadges = [
-            { name: "First Steps", icon: "🎯", description: "Completed your first course" },
-            { name: "Quick Learner", icon: "⚡", description: "Completed 3 courses in a week" },
-            { name: "Security Expert", icon: "🛡️", description: "Mastered 5 security courses" },
-            { name: "Night Owl", icon: "🦉", description: "Learned 50 hours after midnight" }
-        ];
-
-        const sampleActivities = [
-            { action: "Completed 85% of", course: "Ethical Hacking Fundamentals", time: "2 hours ago" },
-            { action: "Started", course: "Malware Analysis", time: "1 day ago" },
-            { action: "Earned badge", course: "Security Expert", time: "3 days ago" },
-            { action: "Completed 60% of", course: "Network Security Essentials", time: "5 days ago" },
-            { action: "Completed", course: "Web Application Security - Module 2", time: "1 week ago" }
-        ];
 
         // Load user data from localStorage or API -> localStorage'dan veya API'den kullanıcı verilerini yükle
         async function loadUserData() {
@@ -190,11 +145,56 @@
             // API'den veri çekmek için kullanıcı ID'si varsa
             if (userData.id) {
                 try {
-                    const response = await fetch(`http://localhost:3000/api/user/${userData.id}`);
-                    const data = await response.json();
+                    // Load user profile data
+                    const userResponse = await fetch(`http://localhost:3000/api/user/${userData.id}`);
+                    const userData_result = await userResponse.json();
                     
-                    if (data.success && data.user) {
-                        updateProfile(data.user);
+                    if (userData_result.success && userData_result.user) {
+                        updateProfile(userData_result.user);
+                    }
+                    
+                    // Load user progress data
+                    const progressResponse = await fetch(`http://localhost:3000/api/user/${userData.id}/progress`);
+                    const progressData = await progressResponse.json();
+                    
+                    console.log('Progress data:', progressData);
+                    console.log('Progress data courses:', progressData.courses);
+                    
+                    if (progressData.success) {
+                        updateProgress(progressData.progress);
+                        console.log('Courses data:', progressData.courses);
+                        console.log('Courses count:', progressData.courses ? progressData.courses.length : 0);
+                        
+                        if (progressData.courses && progressData.courses.length > 0) {
+                            progressData.courses.forEach((course, idx) => {
+                                console.log(`Course ${idx + 1}:`, {
+                                    id: course.id,
+                                    title: course.title,
+                                    status: course.status,
+                                    progress: course.progress
+                                });
+                            });
+                        }
+                        
+                        renderCoursesFromData(progressData.courses || []);
+                    } else {
+                        console.error('Progress data error:', progressData.message);
+                    }
+                    
+                    // Load user badges
+                    const badgesResponse = await fetch(`http://localhost:3000/api/user/${userData.id}/badges`);
+                    const badgesData = await badgesResponse.json();
+                    
+                    if (badgesData.success) {
+                        renderBadgesFromData(badgesData.badges);
+                    }
+                    
+                    // Load user activity
+                    const activityResponse = await fetch(`http://localhost:3000/api/user/${userData.id}/activity?limit=10`);
+                    const activityData = await activityResponse.json();
+                    
+                    if (activityData.success) {
+                        renderActivityFromData(activityData.activities);
                     }
                 } catch (error) {
                     console.error('Error fetching user data:', error);
@@ -204,6 +204,119 @@
                     }
                 }
             }
+        }
+        
+        // Update progress statistics
+        function updateProgress(progress) {
+            document.getElementById('totalProgress').textContent = progress.totalProgress + '%';
+            document.getElementById('totalProgressBar').querySelector('.progress-fill').style.width = progress.totalProgress + '%';
+            document.getElementById('coursesCompleted').textContent = progress.coursesCompleted;
+            document.getElementById('coursesInProgress').textContent = progress.coursesInProgress;
+            document.getElementById('totalHours').textContent = progress.totalHours;
+        }
+        
+        // Render courses from API data - separated by status
+        function renderCoursesFromData(courses) {
+            const completedGrid = document.getElementById('completedCoursesGrid');
+            const inProgressGrid = document.getElementById('inProgressCoursesGrid');
+            
+            console.log('Rendering courses:', courses);
+            
+            if (!courses || courses.length === 0) {
+                completedGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px; grid-column: 1 / -1;">Henüz kurs başlatılmamış.</p>';
+                inProgressGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px; grid-column: 1 / -1;">Henüz kurs başlatılmamış.</p>';
+                return;
+            }
+            
+            // Separate courses by status - Veritabanından gelen status'a göre ayır
+            // Tamamlanan kurslar: status = 'completed' veya tüm quiz'ler tamamlanmış
+            const completedCourses = courses.filter(course => {
+                return course.status === 'completed' || 
+                       (course.total_quizzes > 0 && course.completed_quizzes === course.total_quizzes);
+            });
+            // Devam eden kurslar: status = 'in_progress' veya 'enrolled' ve en az bir quiz tamamlanmış ama hepsi değil
+            const inProgressCourses = courses.filter(course => {
+                return (course.status === 'in_progress' || course.status === 'enrolled') &&
+                       !(course.total_quizzes > 0 && course.completed_quizzes === course.total_quizzes);
+            });
+            
+            // Map course categories/icons
+            const categoryIcons = {
+                'Penetrasyon Testi Eğitimi': '🎯',
+                'Penetrasyon Testi': '🎯',
+                'Linux Temelleri': '🐧',
+                'Siber Güvenlik Temelleri': '🔒',
+                'Siber Güvenlik': '🔒',
+                'Exploit Attack': '💥',
+                'Network Security': '🌐',
+                'Web Security': '🕷️',
+                'Cryptography': '🔐'
+            };
+            
+            // Helper function to render course card
+            function renderCourseCard(course) {
+                // Find matching icon
+                let icon = '📚';
+                for (const [key, value] of Object.entries(categoryIcons)) {
+                    if (course.title.includes(key) || key.includes(course.title)) {
+                        icon = value;
+                        break;
+                    }
+                }
+                
+                const category = course.title.includes('Penetrasyon') ? 'Penetrasyon Testi' :
+                               course.title.includes('Linux') ? 'Linux Temelleri' :
+                               course.title.includes('Siber') ? 'Siber Güvenlik' :
+                               course.title.includes('Exploit') ? 'Exploit Saldırıları' :
+                               course.title.includes('Network') ? 'Ağ Güvenliği' :
+                               'Kurs';
+                
+                const isCompleted = course.status === 'completed';
+                const buttonText = isCompleted ? 'Tekrar Görüntüle' : 'Devam Et';
+                const buttonClass = isCompleted ? 'continue-btn completed' : 'continue-btn';
+                
+                return `
+                    <div class="course-card ${isCompleted ? 'completed' : ''}">
+                        <div class="course-thumbnail">${icon}</div>
+                        <div class="course-content">
+                            <div class="course-category">${category}</div>
+                            <h3 class="course-title">${course.title}</h3>
+                            <div class="course-progress">
+                                <div class="progress-info">
+                                    <span>İlerleme</span>
+                                    <span>${course.progress}%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${course.progress}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${isCompleted ? '<div class="course-badge completed-badge">✓ Tamamlandı</div>' : ''}
+                            <button class="${buttonClass}" onclick="continueCourse(${course.id})">${buttonText}</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Render completed courses
+            if (completedCourses.length === 0) {
+                completedGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px; grid-column: 1 / -1;">Henüz tamamlanan kurs yok.</p>';
+            } else {
+                completedGrid.innerHTML = completedCourses.map(renderCourseCard).join('');
+            }
+            
+            // Render in-progress courses
+            if (inProgressCourses.length === 0) {
+                inProgressGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px; grid-column: 1 / -1;">Henüz devam eden kurs yok.</p>';
+            } else {
+                inProgressGrid.innerHTML = inProgressCourses.map(renderCourseCard).join('');
+            }
+        }
+        
+        // Continue course function
+        function continueCourse(courseId) {
+            window.location.href = `course-detail.html?id=${courseId}`;
         }
 
         // Profili güncelleme
@@ -216,36 +329,17 @@
             }
         }
 
-        // Dersleri görüntüleme
-        function renderCourses() {
-            const grid = document.getElementById('coursesGrid');
-            grid.innerHTML = sampleCourses.map(course => `
-                <div class="course-card">
-                    <div class="course-thumbnail">${course.thumbnail}</div>
-                    <div class="course-content">
-                        <div class="course-category">${course.category}</div>
-                        <h3 class="course-title">${course.title}</h3>
-                        <div class="course-progress">
-                            <div class="progress-info">
-                                <span>Progress</span>
-                                <span>${course.progress}%</span>
-                            </div>
-                            <div class="progress-bar-container">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${course.progress}%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="continue-btn" onclick="continueCourse(${course.id})">Continue</button>
-                    </div>
-                </div>
-            `).join('');
-        }
 
-        //Ödülleri(bagde) görüntüleme
-        function renderBadges() {
+        //Ödülleri(bagde) görüntüleme - Veritabanından
+        function renderBadgesFromData(badges) {
             const grid = document.getElementById('badgesGrid');
-            grid.innerHTML = sampleBadges.map(badge => `
+            
+            if (!badges || badges.length === 0) {
+                grid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px;">Henüz rozet kazanılmadı.</p>';
+                return;
+            }
+            
+            grid.innerHTML = badges.map(badge => `
                 <div class="badge-card">
                     <div class="badge-icon">${badge.icon}</div>
                     <h4 class="badge-name">${badge.name}</h4>
@@ -254,10 +348,16 @@
             `).join('');
         }
 
-        // Aktivite zaman çizelgesini görüntüleme
-        function renderActivity() {
+        // Aktivite zaman çizelgesini görüntüleme - Veritabanından
+        function renderActivityFromData(activities) {
             const timeline = document.getElementById('activityTimeline');
-            timeline.innerHTML = sampleActivities.map(activity => `
+            
+            if (!activities || activities.length === 0) {
+                timeline.innerHTML = '<p style="color: rgba(255, 255, 255, 0.5); text-align: center; padding: 40px;">Henüz aktivite bulunmuyor.</p>';
+                return;
+            }
+            
+            timeline.innerHTML = activities.map(activity => `
                 <div class="activity-item">
                     <div class="activity-dot"></div>
                     <div class="activity-content">
@@ -277,7 +377,7 @@
             if (isEditable) {
                 // bio'yı kaydet
                 bio.contentEditable = 'false';
-                this.textContent = 'Edit Profile';
+                this.textContent = 'Profili Düzenle';
                 this.disabled = true;
                 
                 // bio'yı backend'e kaydet
@@ -291,10 +391,10 @@
                         
                         const data = await response.json();
                         if (data.success) {
-                            console.log('Bio saved successfully');
+                            console.log('Bio başarıyla kaydedildi');
                         }
                     } catch (error) {
-                        console.error('Error saving bio:', error);
+                        console.error('Bio kaydetme hatası:', error);
                     }
                 }
                 
@@ -302,14 +402,13 @@
             } else {
                 bio.contentEditable = 'true';
                 bio.focus();
-                this.textContent = 'Save';
+                this.textContent = 'Kaydet';
             }
         });
 
         function continueCourse(courseId) {
-            // Ders sayfasına yönlendir
-            console.log('Continue course:', courseId);
-            // window.location.href = `course.html?id=${courseId}`;
+            // Kurs detay sayfasına yönlendir
+            window.location.href = `course-detail.html?id=${courseId}`;
         }
 
         // Navbar'ı güncelle ve profil linkini göster
@@ -330,7 +429,8 @@
         // Çıkış işlemini gerçekleştir
         function logout() {
             localStorage.removeItem('userData');
-            window.location.href = '../../index.html';
+            // profile.html public klasöründe, index.html root'ta
+            window.location.href = '../index.html';
         }
 
         // Çıkış işlemini global olarak kullanılabilir hale getir
@@ -338,10 +438,7 @@
 
         // Sayfayı başlat
         document.addEventListener('DOMContentLoaded', function() {
-            loadUserData();
-            renderCourses();
-            renderBadges();
-            renderActivity();
+            loadUserData(); // This will now load progress, courses, badges, and activity from API
             
             // Navbar'ın yüklenmesini bekle, ardından güncelle
             setTimeout(updateNavbar, 500);

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="layout">
@@ -23,7 +23,6 @@
         <a href="#" data-section="users">Kullanıcılar</a>
         <a href="#" data-section="settings">Ayarlar</a>
       </nav>
-      <button class="logout" onclick="logout()">Çıkış</button>
     </aside>
 
     <main class="content">
@@ -33,12 +32,12 @@
           <h1>Kontrol Merkezi</h1>
         </div>
         <div class="actions">
-          <button class="ghost">Önbellek Temizle</button>
-          <button class="primary">Yeni İçerik Ekle</button>
+          <button class="ghost back-to-site-header" onclick="goToSite()">Siteye Geri Dön</button>
+          <button class="ghost logout-header" id="admin-logout-btn-header">Çıkış</button>
         </div>
       </header>
 
-      <section class="stats" data-section-panel="overview">
+      <section class="stats panel" data-section-panel="overview" style="display: block;">
         <div class="stat-card">
           <p>Kurslar</p>
           <h2 id="stat-courses">-</h2>
@@ -58,6 +57,43 @@
           <p>Aktif Kullanıcı</p>
           <h2 id="stat-active">-</h2>
           <span class="badge positive">Anlık</span>
+        </div>
+      </section>
+      
+      <!-- Genel Bakış için kurs ve blog listeleri (sadece görüntüleme) -->
+      <section class="panel" data-section-panel="overview">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Kurslar</p>
+            <h2>Kurs Listesi</h2>
+          </div>
+        </div>
+        <div class="table">
+          <div class="table-head">
+            <span>Başlık</span>
+            <span>Kategori</span>
+            <span>Görsel</span>
+            <span>Tarih</span>
+          </div>
+          <div id="overview-courses-table-body" class="table-body"></div>
+        </div>
+      </section>
+
+      <section class="panel" data-section-panel="overview">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Blog Yazıları</p>
+            <h2>Blog Listesi</h2>
+          </div>
+        </div>
+        <div class="table">
+          <div class="table-head">
+            <span>Başlık</span>
+            <span>Özet</span>
+            <span>Görsel</span>
+            <span>Tarih</span>
+          </div>
+          <div id="overview-blogs-table-body" class="table-body"></div>
         </div>
       </section>
 
@@ -135,13 +171,15 @@
             <button class="ghost" id="refresh-users">Yenile</button>
           </div>
         </div>
-        <div class="table">
+        <div class="table" data-table="users">
           <div class="table-head">
             <span>Ad</span>
             <span>Kullanıcı Adı</span>
             <span>E-posta</span>
+            <span>Rol</span>
             <span>Durum</span>
             <span>Kaydı</span>
+            <span>İşlem</span>
           </div>
           <div id="users-table-body" class="table-body"></div>
         </div>
@@ -161,6 +199,46 @@
       </section>
     </main>
   </div>
+
+  <!-- Modül Yönetim Modal -->
+  <div id="module-management-modal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+      <div class="modal-header">
+        <h2 id="module-modal-title">Modül Yönetimi</h2>
+        <button class="modal-close" onclick="closeModuleModal()">&times;</button>
+      </div>
+      <div id="module-management-content">
+        <!-- Modül listesi ve form buraya eklenecek -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Soru Yönetim Modal -->
+  <div id="question-management-modal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h2 id="question-modal-title">Soru Yönetimi</h2>
+        <button class="modal-close" onclick="closeQuestionModal()">&times;</button>
+      </div>
+      <div id="question-management-content">
+        <!-- Soru listesi ve form buraya eklenecek -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Düzenleme Modal (Modül, Soru, Cevap için ortak) -->
+  <div id="edit-item-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2 id="edit-item-modal-title">Düzenle</h2>
+        <button class="modal-close" onclick="closeEditItemModal()">&times;</button>
+      </div>
+      <div id="edit-item-content">
+        <!-- Düzenleme formu buraya eklenecek -->
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin.js"></script>
   
 </body>
